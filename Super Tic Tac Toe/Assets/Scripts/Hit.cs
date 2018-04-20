@@ -4,17 +4,19 @@ using UnityEngine;
 
 public class Hit : MonoBehaviour {
 
-	public GameObject Object;
+	//public GameObject Object;
+	
 	private MatchManager _script; 
 
 	void Awake()
 	{
-		_script = Object.GetComponent<MatchManager>();
+		//_script = Object.GetComponent<MatchManager>();
+		_script = FindObjectOfType(typeof(MatchManager)) as MatchManager;
 	}
 
 	void OnMouseDown()
 	{
-		_script.SpawnNewPiece(this.gameObject);
+		_script.PlaceNewPiece(this.gameObject);
 	}
 
 }
