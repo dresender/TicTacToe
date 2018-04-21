@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class Hit : MonoBehaviour {
 
-	//public GameObject Object;
-	
-	private MatchManager _script; 
+	private MatchManager _script;
 
 	void Awake()
 	{
-		//_script = Object.GetComponent<MatchManager>();
 		_script = FindObjectOfType(typeof(MatchManager)) as MatchManager;
 	}
 
 	void OnMouseDown()
 	{
+		if (_script._playerTurn == MatchManager.Player.Player)
 		_script.PlaceNewPiece(this.gameObject);
 	}
 
