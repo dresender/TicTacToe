@@ -85,7 +85,7 @@ public class BoardManager : MonoBehaviour
 			}
 
 			if (_cross == BoardSize || _circle == BoardSize)
-				Debug.Log(string.Format("CheckGameOverLines"));
+				//Debug.Log(string.Format("CheckGameOverLines"));
 
 			if (_cross == BoardSize)
 				return Cross;
@@ -115,7 +115,7 @@ public class BoardManager : MonoBehaviour
 			}
 
 			if (_cross == BoardSize || _circle == BoardSize)
-			Debug.Log(string.Format("CheckGameOverColumns"));
+				//Debug.Log(string.Format("CheckGameOverColumns"));
 
 			if (_cross == BoardSize)
 				return Cross;
@@ -134,6 +134,7 @@ public class BoardManager : MonoBehaviour
 	{
 		var _cross = 0;
 		var _circle = 0;
+		
 		//Checking left to right diagonal for a sequence of the same Piece
 		for (int i = 0; i < BoardSize; i++)
 		{
@@ -142,7 +143,7 @@ public class BoardManager : MonoBehaviour
 		}
 
 		if (_cross == BoardSize || _circle == BoardSize)
-		Debug.Log(string.Format("CheckGameOverDiagLeft"));
+			//Debug.Log(string.Format("CheckGameOverDiagLeft"));
 		
 		if (_cross == BoardSize)
 			return Cross;
@@ -167,7 +168,7 @@ public class BoardManager : MonoBehaviour
 		}
 
 		if (_cross == BoardSize || _circle == BoardSize)
-		Debug.Log(string.Format("CheckGameOverDiagRight"));
+			//Debug.Log(string.Format("CheckGameOverDiagRight"));
 
 		if (_cross == BoardSize)
 			return Cross;

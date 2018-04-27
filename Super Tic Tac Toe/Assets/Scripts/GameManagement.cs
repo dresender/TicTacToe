@@ -11,27 +11,27 @@ public class GameManagement : MonoBehaviour
 	public enum PlayerPawn { Cross, Circle };
 	public Player Turn;
 	public PlayerControl PlayerOne = PlayerControl.Human;
-	public PlayerControl PlayerTwo = PlayerControl.Human;
+	public PlayerControl PlayerTwo = PlayerControl.AI;
 	public PlayerPawn PlayerOnePawn = PlayerPawn.Cross;
 	public PlayerPawn PlayerTwoPawn = PlayerPawn.Circle;
+	public bool GameOverConfirmed = false;
 
 
 	private BoardManager _board;
-	private GameObject _victoriousPlayer;
 	private GameObject _pawn;
-	private GameObject[,] _boardArrayClone;
-	private PlayerControl _currentPlayerController;
+	//private GameObject[,] _boardArrayClone;
 	private GameObject _playerOneDesignatedPawn;
 	private GameObject _playerTwoDesignatedPawn;
+	private GameObject _victoriousPlayer;
 	private PlayerControl _aiTurnCount;
-	private bool _gameOverConfirmed;
+	private PlayerControl _currentPlayerController;
 	private int _bestLine;
 	private int _bestColumn;
 
 	void Start()
 	{
 		_board = GameBoard.GetComponent<BoardManager>();
-		_boardArrayClone = new GameObject[_board.BoardSize, _board.BoardSize];
+		//_boardArrayClone = new GameObject[_board.BoardSize, _board.BoardSize];
 
 		SetupPlayerPawns();
 
@@ -41,32 +41,28 @@ public class GameManagement : MonoBehaviour
 
 	public void PlaceNewPiece(GameObject obj)
 	{
-		if (!_gameOverConfirmed)
+		if (!GameOverConfirmed)
 		{
 			if (Turn == Player.PlayerOne)
 				_pawn = _playerOneDesignatedPawn;
 			else
 				_pawn = _playerTwoDesignatedPawn;
 
-			//Checking for a victorious player
-			_victoriousPlayer = _board.CheckIfGameIsOver(_board.Board);
-			Debug.Log(string.Format("{0}, {1}", _victoriousPlayer.gameObject.tag, " Won the Game!"));
-			if (_victoriousPlayer != _board.EmptyCell)
-				_gameOverConfirmed = true;
-
 			//Human Player
-			if (_currentPlayerController == PlayerControl.Human && !_gameOverConfirmed)
+			if (_currentPlayerController == PlayerControl.Human && !GameOverConfirmed)
 			{
 				var _instantiatedGameObject = Instantiate(_pawn, obj.transform.position, Quaternion.identity);
 				_board.UpdateBoard(_instantiatedGameObject);
 				Turn = ChangePlayerTurn(Turn);
 				Destroy(obj.gameObject);
+				CheckForGameOverCondition();
 			}
-
-			if (_currentPlayerController == PlayerControl.AI && !_gameOverConfirmed)
+			//AI Player
+			if (_currentPlayerController == PlayerControl.AI && !GameOverConfirmed)
 			{
 				MakeAIMove();
 				Turn = ChangePlayerTurn(Turn);
+				CheckForGameOverCondition();
 			}
 		}
 	}
@@ -99,20 +95,57 @@ public class GameManagement : MonoBehaviour
 		return _p;
 	}
 
+	private void CheckForGameOverCondition()
+	{
+		//Checking for a victorious player
+		_victoriousPlayer = _board.CheckIfGameIsOver(_board.Board);
+		if (_victoriousPlayer != _board.EmptyCell)
+			GameOverConfirmed = true;
+	}
+
 	private void MakeAIMove()
     {
-		_bestLine = 99;
-		_bestColumn = 99;
+		//_bestLine = 99;
+		//_bestColumn = 99;
 
         //Clone the game Board array to use in the AI searching movement script
-        CloneBoardArray(_board.Board);
+        var _boardCopy = CloneArray(_board.Board);
 
         //Find out all the empty cells in the cellPiecesArray cloned
-        var _emptyCells = CheckHowManyEmptyCells(_boardArrayClone);
+        var _emptyCells = CheckHowManyEmptyCells(_boardCopy);
+
+		//Create a score Array to decide which one is the best move
+		var _scoreArray = new int[_board.BoardSize, _board.BoardSize];
 
         //Find out the best move
         _aiTurnCount = PlayerControl.AI;
-        Minimax(_boardArrayClone, _emptyCells, true);
+
+		//Declare a helpful variable for minimax
+		var maxValue = -99;
+
+		//Iterate through the copied board array to find best move
+		for (int i = 0; i < _board.BoardSize; i++)
+		{
+			for (int j = 0; j < _board.BoardSize; j++)
+			{
+				if (_boardCopy[i,j].gameObject.tag == _board.EmptyCell.gameObject.tag)
+				{
+					_boardCopy[i,j] = _playerTwoDesignatedPawn;
+					_emptyCells = CheckHowManyEmptyCells(_boardCopy);
+					var _miniMaxBoardCopy = new GameObject[_board.BoardSize, _board.BoardSize];
+					_miniMaxBoardCopy = CloneArray(_boardCopy);
+					int value = Minimax(_miniMaxBoardCopy, _emptyCells, true);
+					_scoreArray[i,j] = value;
+					Debug.Log(_scoreArray[i,j]);
+
+					if (value > maxValue)
+					{
+						_bestLine = i;
+						_bestColumn = j;
+					}
+				}
+			}			
+		}
 
         var _newMovePosition = _board.Board[_bestLine, _bestColumn];
 
@@ -136,11 +169,30 @@ public class GameManagement : MonoBehaviour
             _board.UpdateBoard(_newPositionObject);
         }
 
+		// Debug.Log(string.Format("{0}, {1}, {2}",_board.Board[0,0].gameObject.tag, _board.Board[0,1].gameObject.tag,
+		//  _board.Board[0,2].gameObject.tag));
+		// Debug.Log(string.Format("{0}, {1}, {2}",_board.Board[1,0].gameObject.tag, _board.Board[1,1].gameObject.tag,
+		//  _board.Board[1,2].gameObject.tag));
+		// Debug.Log(string.Format("{0}, {1}, {2}",_board.Board[2,0].gameObject.tag, _board.Board[2,1].gameObject.tag,
+		//  _board.Board[2,2].gameObject.tag));
+
+		// Debug.Log(string.Format("{0}, {1}, {2}",_boardCopy[0,0].gameObject.tag, _boardCopy[0,1].gameObject.tag,
+		//  _boardCopy[0,2].gameObject.tag));
+		// Debug.Log(string.Format("{0}, {1}, {2}",_boardCopy[1,0].gameObject.tag, _boardCopy[1,1].gameObject.tag,
+		//  _boardCopy[1,2].gameObject.tag));
+		// Debug.Log(string.Format("{0}, {1}, {2}",_boardCopy[2,0].gameObject.tag, _boardCopy[2,1].gameObject.tag,
+		//  _boardCopy[2,2].gameObject.tag));
+
         //Plays the best move found
         Instantiate(_newPositionObject, _newPositionObject.transform.position, Quaternion.identity);
 
+		Debug.Log(string.Format("{0}, {1}, {2}",_scoreArray[0,0], _scoreArray[0,1], _scoreArray[0,2]));
+		Debug.Log(string.Format("{0}, {1}, {2}",_scoreArray[1,0], _scoreArray[1,1], _scoreArray[1,2]));
+		Debug.Log(string.Format("{0}, {1}, {2}",_scoreArray[2,0], _scoreArray[2,1], _scoreArray[2,2]));
+
         //Clear cellPiecesArray cloned
-        ClearArray(_boardArrayClone);
+        //ClearArray(_boardCopy);
+		//ClearArray(_scoreArray);
     }
 
     private int Minimax(GameObject[,] _b, int _depth, bool firstTime = false)
@@ -166,12 +218,12 @@ public class GameManagement : MonoBehaviour
                         if (next > max)
                         {
                             max = next;
-                            if (firstTime)
-                            {
-                                _bestLine = i;
-                                _bestColumn = j;
-								Debug.Log(string.Format("{0}, {1}", i, j));
-                            }
+                            // if (firstTime)
+                            // {
+                            //     _bestLine = i;
+                            //     _bestColumn = j;
+							// 	Debug.Log(string.Format("{0}, {1}", i, j));
+                            // }
                         }
                     }
                 }
@@ -227,10 +279,11 @@ public class GameManagement : MonoBehaviour
 		return 0;
 	}
 
-	private GameObject[,] CloneBoardArray(GameObject[,] _b)
+	private GameObject[,] CloneArray(GameObject[,] _array)
 	{
-		_boardArrayClone = new GameObject[_board.BoardSize, _board.BoardSize];
-		return _boardArrayClone = (GameObject[,])_b.Clone();
+		var _arrayClone = new GameObject[_board.BoardSize, _board.BoardSize];
+		_arrayClone = (GameObject[,])_array.Clone();
+		return _arrayClone;
 	}
 
 	private void ClearArray(GameObject[,] _array)

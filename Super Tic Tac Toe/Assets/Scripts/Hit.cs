@@ -13,7 +13,7 @@ public class Hit : MonoBehaviour {
 
 	void OnMouseDown()
 	{
-		//if (_script.PlayerTurn == GameManagement.Player.Player)
+		if (_script.GameOverConfirmed != true)
 		_script.PlaceNewPiece(this.gameObject);
 	}
 
