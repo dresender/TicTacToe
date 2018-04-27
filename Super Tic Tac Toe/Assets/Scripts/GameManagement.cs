@@ -101,9 +101,12 @@ public class GameManagement : MonoBehaviour
 
 	private void MakeAIMove()
     {
+		_bestLine = 99;
+		_bestColumn = 99;
+
         //Clone the game Board array to use in the AI searching movement script
         CloneBoardArray(_board.Board);
-		
+
         //Find out all the empty cells in the cellPiecesArray cloned
         var _emptyCells = CheckHowManyEmptyCells(_boardArrayClone);
 
@@ -137,7 +140,7 @@ public class GameManagement : MonoBehaviour
         Instantiate(_newPositionObject, _newPositionObject.transform.position, Quaternion.identity);
 
         //Clear cellPiecesArray cloned
-        ClearBoardArrayClone();
+        ClearArray(_boardArrayClone);
     }
 
     private int Minimax(GameObject[,] _b, int _depth, bool firstTime = false)
@@ -230,8 +233,13 @@ public class GameManagement : MonoBehaviour
 		return _boardArrayClone = (GameObject[,])_b.Clone();
 	}
 
-	private void ClearBoardArrayClone()
+	private void ClearArray(GameObject[,] _array)
 	{
-		Array.Clear(_boardArrayClone, 0, _boardArrayClone.Length);
+		Array.Clear(_array, 0, _array.Length);
+	}
+
+	private void ClearArray(int[,] _array)
+	{
+		Array.Clear(_array, 0, _array.Length);
 	}
 }
