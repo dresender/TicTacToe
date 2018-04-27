@@ -48,30 +48,30 @@ public class GameManagement : MonoBehaviour
 			else
 				_pawn = _playerTwoDesignatedPawn;
 
+			//Checking for a victorious player
+			_victoriousPlayer = _board.CheckIfGameIsOver(_board.Board);
+			Debug.Log(string.Format("{0}, {1}", _victoriousPlayer.gameObject.tag, " Won the Game!"));
+			if (_victoriousPlayer != _board.EmptyCell)
+				_gameOverConfirmed = true;
+
 			//Human Player
-			if (_currentPlayerController == PlayerControl.Human)
+			if (_currentPlayerController == PlayerControl.Human && !_gameOverConfirmed)
 			{
 				var _instantiatedGameObject = Instantiate(_pawn, obj.transform.position, Quaternion.identity);
 				_board.UpdateBoard(_instantiatedGameObject);
 				Turn = ChangePlayerTurn(Turn);
 				Destroy(obj.gameObject);
-
-				MakeAIMove();
 			}
-			// else
-			// {
-			// 	MakeAIMove();
-			// }
 
-			//Checking for a victorious player
-			_victoriousPlayer = _board.CheckIfGameIsOver(_board.Board);
-			Debug.Log(_victoriousPlayer);
-			if (_victoriousPlayer != _board.EmptyCell)
-				_gameOverConfirmed = true;
+			if (_currentPlayerController == PlayerControl.AI && !_gameOverConfirmed)
+			{
+				MakeAIMove();
+				Turn = ChangePlayerTurn(Turn);
+			}
 		}
 	}
 
-	void SetupPlayerPawns()
+	private void SetupPlayerPawns()
 	{
 		if (PlayerOnePawn == PlayerPawn.Cross)
 			_playerOneDesignatedPawn = _board.Cross;
@@ -106,7 +106,6 @@ public class GameManagement : MonoBehaviour
 		
         //Find out all the empty cells in the cellPiecesArray cloned
         var _emptyCells = CheckHowManyEmptyCells(_boardArrayClone);
-		Debug.Log(_emptyCells);
 
         //Find out the best move
         _aiTurnCount = PlayerControl.AI;
@@ -115,38 +114,27 @@ public class GameManagement : MonoBehaviour
         var _newMovePosition = _board.Board[_bestLine, _bestColumn];
 
         //Destroy the empty cell
-        Destroy(_board.Board[_bestLine, _bestColumn]);
+        Destroy(_board.Board[_bestLine, _bestColumn].gameObject);
 
         GameObject _newPositionObject = new GameObject();
         _newPositionObject.transform.position = _newMovePosition.transform.position;
 
         if (_playerTwoDesignatedPawn.gameObject.tag == _board.Circle.gameObject.tag)
         {
+			_board.Circle.transform.position = _newPositionObject.transform.position;
             _newPositionObject = _board.Circle;
 			_board.UpdateBoard(_newPositionObject);
-			Debug.Log(_newPositionObject);
         }
 
         if (_playerTwoDesignatedPawn.gameObject.tag == _board.Cross.gameObject.tag)
         { 
+			_board.Cross.transform.position = _newPositionObject.transform.position;
             _newPositionObject = _board.Cross;
             _board.UpdateBoard(_newPositionObject);
         }
 
         //Plays the best move found
         Instantiate(_newPositionObject, _newPositionObject.transform.position, Quaternion.identity);
-
-        //With the celltransform to play, play the correct Piece on the correct spot
-        //Pass turn to the Player
-        Turn = ChangePlayerTurn(Turn);
-
-		// for (int i = 0; i < _board.BoardSize; i++)
-		// {
-		// 	for (int j = 0; j < _board.BoardSize; j++)
-		// 	{
-		// 		Debug.Log(string.Format("{0}, {1}, {2}", i, j, _boardArrayClone[i,j]));
-		// 	}
-		// }
 
         //Clear cellPiecesArray cloned
         ClearBoardArrayClone();
