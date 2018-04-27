@@ -15,7 +15,8 @@ public class MatchManager : MonoBehaviour {
 
 	private Vector2[,] _cellPositionStorage;
 	private Vector2 _cellPosition;
-	private Piece[,] _cellPiecesArray;
+    private GameObject[,] _slots;
+    private Piece[,] _cellPiecesArray;
 	private Piece[,] _cellPiecesArrayClone;
 	private Piece _victoriousPlayer;
 	private Piece _pieceTurn;
@@ -24,14 +25,16 @@ public class MatchManager : MonoBehaviour {
 	private Player _playerOne;
 	private Player _playerTwo;
 	private Player _aiTurnCount;
-	private int[,] _scoreBoard;
 	private int _score;
 	private bool _gameOverConfirmed;
+    private int _bestLine;
+    private int _bestColumn;
 
 	void Start()
 	{
 		_victoriousPlayer = Piece.Empty;
 		_gameOverConfirmed = false;
+		_slots = new GameObject[BoardSize,BoardSize];
 
 		//Temporary
 		_playerTurn = _playerOne;
@@ -58,8 +61,7 @@ public class MatchManager : MonoBehaviour {
 					_playerTurn = ChangePlayerTurn(_playerTurn);
 					Destroy(obj.gameObject);
 
-					if (_playerTurn == Player.AI)
-						MakeMove();
+					MakeAIMove();
 				}
 				else
 				{
@@ -69,8 +71,7 @@ public class MatchManager : MonoBehaviour {
 					_playerTurn = ChangePlayerTurn(_playerTurn);
 					Destroy(obj.gameObject);
 
-					if (_playerTurn == Player.AI)
-						MakeMove();
+                    MakeAIMove();
 				}
 			}			
 
@@ -94,16 +95,13 @@ public class MatchManager : MonoBehaviour {
 		//Setting up the array that will store the position of every cell in game world
 		_cellPositionStorage = new Vector2[BoardSize, BoardSize];
 
-		//Setting up the scoreBoard for the Minimax algorithm AI
-		_scoreBoard = new int[BoardSize, BoardSize];
-
 		//Loop over every cell on the board and place a empty cell
 		for (int i = 0; i < BoardSize; i++)
 		{
 			for(int j = 0; j < BoardSize; j++)
 			{
 				_cellPosition += new Vector2(BoardSize, 0f);
-				Instantiate(EmptyCell, _cellPosition, Quaternion.identity);
+                _slots[i,j] = Instantiate(EmptyCell, _cellPosition, Quaternion.identity);
 				_cellPiecesArray[i,j] = Piece.Empty;
 				_cellPositionStorage[i,j] = _cellPosition;
 			}
@@ -114,13 +112,11 @@ public class MatchManager : MonoBehaviour {
 
 	private void UpdatingCellPiecesArray(Vector2 _hit, Piece _type)
 	{
-		var _hitPosition = _hit;
-
 		for (int i = 0; i < BoardSize; i++)
 		{
 			for(int j = 0; j < BoardSize; j++)
 			{
-				if(_cellPositionStorage[i,j] == _hitPosition)
+				if(_cellPositionStorage[i,j] == _hit)
 					_cellPiecesArray[i,j] = _type;
 			}
 		}
@@ -268,58 +264,108 @@ public class MatchManager : MonoBehaviour {
 			return _playerOne;
 	}
 
-	private void MakeMove()
-	{	
-		Vector2 _move = new Vector2();
-		CloneCellPiecesArray();
-		var _emptyCells = CheckHowManyEmptyCells(_cellPiecesArrayClone);
-		_score = 0;
+    private void MakeAIMove()
+    {
+        //Vector2 _move = new Vector2();
 
-		//Find out the best move
+        //Clone the cellPieces array to use in the AI searching movement script
+        CloneCellPiecesArray();
 
-		//Plays the best move found
-			//With the celltransform to play, play the correct Piece on the correct spot
-		//Pass turn to the Player						
-	}
+        //Find out all the empty cells in the cellPiecesArray cloned
+        var _emptyCells = CheckHowManyEmptyCells(_cellPiecesArrayClone);
 
-	private int Minimax(Piece[,] _board, int _depth)
-	{	
-		var _gameWonResult = CheckIfGameIsOver(_board);
+        //Find out the best move
+        _aiTurnCount = Player.AI;
+        Minimax(_cellPiecesArrayClone, _emptyCells, true);
 
-		if (_gameWonResult != Piece.Empty || _depth == 0)
-			return CheckWhichPlayerWon(_gameWonResult);
+        var _newMovePosition = _cellPositionStorage[_bestLine, _bestColumn];
 
-		if (_aiTurnCount == Player.Player)
-		{
-			for (var i = 0; i < BoardSize; i++)
-			{
-				for (var j = 0; j < BoardSize; j++)
-				{
-					if (_board[i,j] == Piece.Empty)
-						_board[i,j] = _playerOnePieceType;
-						_aiTurnCount = Player.AI;
-						_scoreBoard[i,j] = Minimax(_board, _depth - 1);
-				}
-			}
-		}
-		else
-		{
-			for (var i = 0; i < BoardSize; i++)
-			{
-				for (var j = 0; j < BoardSize; j++)
-				{
-					if (_board[i,j] == Piece.Empty)
-						_board[i,j] = _playerTwoPieceType;
-						_aiTurnCount = Player.Player;
-						_scoreBoard[i,j] = Minimax(_board, _depth - 1);
-				}
-			}
-		}
+        //Destroy the empty cell
+        Destroy(_slots[_bestLine, _bestColumn]);
 
-		return;
-	}
+        GameObject _newPositionObject = new GameObject();
+        _newPositionObject.transform.position = _newMovePosition;
 
-	private int CheckWhichPlayerWon(Piece p)
+        if (_playerTwoPieceType == Piece.Circle)
+        {
+            _newPositionObject = Circle;
+            UpdatingCellPiecesArray(_newMovePosition, Piece.Circle);
+        }
+
+        if (_playerTwoPieceType == Piece.Cross)
+        { 
+            _newPositionObject = Cross;
+            UpdatingCellPiecesArray(_newMovePosition, Piece.Cross);
+        }
+
+        //Plays the best move found
+        Instantiate(_newPositionObject, _newPositionObject.transform.position, Quaternion.identity);
+
+        //With the celltransform to play, play the correct Piece on the correct spot
+        //Pass turn to the Player
+        _playerTurn = ChangePlayerTurn(_playerTurn);
+
+        //Clear cellPiecesArray cloned
+        ClearCellPiecesArrayClone();
+    }
+
+    private int Minimax(Piece[,] _board, int _depth, bool firstTime = false)
+    {
+        var _gameWonResult = CheckIfGameIsOver(_board);
+
+        if (_gameWonResult != Piece.Empty || _depth == 0)
+            return CheckWhichPlayerWon(_gameWonResult);
+
+        if (_aiTurnCount == Player.AI)
+        {
+            int max = -999;
+            for (var i = 0; i < BoardSize; i++)
+            {
+                for (var j = 0; j < BoardSize; j++)
+                {
+                    if (_board[i, j] == Piece.Empty)
+                    {
+                        _board[i, j] = _playerTwoPieceType;
+                        _aiTurnCount = Player.Player;
+                        int next = Minimax(_board, _depth - 1);
+                        if(next > max)
+                        {
+                            max = next;
+                            if(firstTime)
+                            {
+                                _bestLine = i;
+                                _bestColumn = j;
+                            }
+                        }
+                    }
+                }
+            }
+            return max;
+        }
+        else
+        {
+            int min = 999;
+            for (var i = 0; i < BoardSize; i++)
+            {
+                for (var j = 0; j < BoardSize; j++)
+                {
+                    if (_board[i, j] == Piece.Empty)
+                    {
+                        _board[i, j] = _playerOnePieceType;
+                        _aiTurnCount = Player.AI;
+                        int next = Minimax(_board, _depth - 1);
+                        if(next < min)
+                        {
+                            min = next;
+                        }
+                    }
+                }
+            }
+            return min;
+        }        
+    }
+
+    private int CheckWhichPlayerWon(Piece p)
 	{
 		if (p == _playerOnePieceType)
 			return -1;

@@ -136,14 +136,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 307733537}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5af49a0fb3a03245818a3c3d148ab4c, type: 3}
+  m_Script: {fileID: 11500000, guid: 5231d550fefd76d44952b8ed3ddbc357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cross: {fileID: 1617003965830132, guid: ab9dcafc65ec0d341af6140ee28e4c49, type: 2}
-  Circle: {fileID: 1380581593720112, guid: f99c052e4ea801a4681286979d7495c7, type: 2}
-  EmptyCell: {fileID: 1716534901468500, guid: 217ef6cea3eb16f43a8312201caecd98, type: 2}
-  BoardSize: 3
-  _playerTurn: 0
+  GameBoard: {fileID: 1579540866}
+  Turn: 0
+  PlayerOne: 0
+  PlayerTwo: 1
+  PlayerOnePawn: 0
+  PlayerTwoPawn: 1
 --- !u!4 &307733539
 Transform:
   m_ObjectHideFlags: 0
@@ -246,6 +247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1579540868}
   - component: {fileID: 1579540867}
+  - component: {fileID: 1579540869}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -310,3 +312,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1579540869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1579540866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 237f7d2a8325e184caca094f58561bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BoardSize: 3
+  Cross: {fileID: 1617003965830132, guid: ab9dcafc65ec0d341af6140ee28e4c49, type: 2}
+  Circle: {fileID: 1380581593720112, guid: f99c052e4ea801a4681286979d7495c7, type: 2}
+  EmptyCell: {fileID: 1716534901468500, guid: 217ef6cea3eb16f43a8312201caecd98, type: 2}
