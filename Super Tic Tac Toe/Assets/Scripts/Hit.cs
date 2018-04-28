@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Hit : MonoBehaviour {
 
-	private GameManagement _script;
+	private GameManager _script;
 
 	void Awake()
 	{
-		_script = FindObjectOfType(typeof(GameManagement)) as GameManagement;
+		_script = FindObjectOfType(typeof(GameManager)) as GameManager;
 	}
 
 	void OnMouseDown()

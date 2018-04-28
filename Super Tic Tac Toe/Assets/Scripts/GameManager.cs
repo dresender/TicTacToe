@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManagement : MonoBehaviour 
+public class GameManager : MonoBehaviour 
 {
 	public GameObject GameBoard;
 	public enum Player { PlayerOne, PlayerTwo };
@@ -19,7 +19,6 @@ public class GameManagement : MonoBehaviour
 
 	private BoardManager _board;
 	private GameObject _pawn;
-	//private GameObject[,] _boardArrayClone;
 	private GameObject _playerOneDesignatedPawn;
 	private GameObject _playerTwoDesignatedPawn;
 	private GameObject _victoriousPlayer;
@@ -27,12 +26,12 @@ public class GameManagement : MonoBehaviour
 	private PlayerControl _currentPlayerController;
 	private int _bestLine;
 	private int _bestColumn;
+	private int[,] _scoreArray;
 
 	void Start()
 	{
 		_board = GameBoard.GetComponent<BoardManager>();
-		//_boardArrayClone = new GameObject[_board.BoardSize, _board.BoardSize];
-
+		_scoreArray = new int[_board.BoardSize, _board.BoardSize];
 		SetupPlayerPawns();
 
 		//Temporary
@@ -101,73 +100,56 @@ public class GameManagement : MonoBehaviour
 		_victoriousPlayer = _board.CheckIfGameIsOver(_board.Board);
 		if (_victoriousPlayer != _board.EmptyCell)
 			GameOverConfirmed = true;
-	}
 
-	private void MakeAIMove()
-    {
-		//_bestLine = 99;
-		//_bestColumn = 99;
+		var count = 0;
 
-        //Clone the game Board array to use in the AI searching movement script
-        var _boardCopy = CloneArray(_board.Board);
-
-        //Find out all the empty cells in the cellPiecesArray cloned
-        var _emptyCells = CheckHowManyEmptyCells(_boardCopy);
-
-		//Create a score Array to decide which one is the best move
-		var _scoreArray = new int[_board.BoardSize, _board.BoardSize];
-
-        //Find out the best move
-        _aiTurnCount = PlayerControl.AI;
-
-		//Declare a helpful variable for minimax
-		var maxValue = -99;
-
-		//Iterate through the copied board array to find best move
 		for (int i = 0; i < _board.BoardSize; i++)
 		{
 			for (int j = 0; j < _board.BoardSize; j++)
 			{
-				if (_boardCopy[i,j].gameObject.tag == _board.EmptyCell.gameObject.tag)
-				{
-					_boardCopy[i,j] = _playerTwoDesignatedPawn;
-					_emptyCells = CheckHowManyEmptyCells(_boardCopy);
-					var _miniMaxBoardCopy = new GameObject[_board.BoardSize, _board.BoardSize];
-					_miniMaxBoardCopy = CloneArray(_boardCopy);
-					int value = Minimax(_miniMaxBoardCopy, _emptyCells, true);
-					_scoreArray[i,j] = value;
-					Debug.Log(_scoreArray[i,j]);
-
-					if (value > maxValue)
-					{
-						_bestLine = i;
-						_bestColumn = j;
-					}
-				}
-			}			
+				if (_board.Board[i, j].gameObject.tag == _board.EmptyCell.tag)
+					count++;
+			}
 		}
 
-        var _newMovePosition = _board.Board[_bestLine, _bestColumn];
+		if (count == 0)
+			GameOverConfirmed = true;
+	}
 
-        //Destroy the empty cell
-        Destroy(_board.Board[_bestLine, _bestColumn].gameObject);
+	private void MakeAIMove()
+    {
+		//Clone the game Board array to use in the AI searching movement script
+		var _boardCopy = CloneArray(_board.Board);
 
-        GameObject _newPositionObject = new GameObject();
-        _newPositionObject.transform.position = _newMovePosition.transform.position;
+		//Find out all the empty cells in the cellPiecesArray cloned
+		var _emptyCells = CheckHowManyEmptyCells(_boardCopy);
 
-        if (_playerTwoDesignatedPawn.gameObject.tag == _board.Circle.gameObject.tag)
-        {
+		//Minimax Call
+		_aiTurnCount = PlayerControl.AI;
+		int _value = Minimax(_boardCopy, _emptyCells, true);
+
+		//Move Position from Minimax
+		var _newMovePosition = _board.Board[_bestLine, _bestColumn];
+
+		//Destroy the empty cell
+		Destroy(_board.Board[_bestLine, _bestColumn].gameObject);
+
+		GameObject _newPositionObject = new GameObject();
+		_newPositionObject.transform.position = _newMovePosition.transform.position;
+
+		if (_playerTwoDesignatedPawn.gameObject.tag == _board.Circle.gameObject.tag)
+		{
 			_board.Circle.transform.position = _newPositionObject.transform.position;
-            _newPositionObject = _board.Circle;
+			_newPositionObject = _board.Circle;
 			_board.UpdateBoard(_newPositionObject);
-        }
+		}
 
-        if (_playerTwoDesignatedPawn.gameObject.tag == _board.Cross.gameObject.tag)
-        { 
+		if (_playerTwoDesignatedPawn.gameObject.tag == _board.Cross.gameObject.tag)
+		{ 
 			_board.Cross.transform.position = _newPositionObject.transform.position;
-            _newPositionObject = _board.Cross;
-            _board.UpdateBoard(_newPositionObject);
-        }
+			_newPositionObject = _board.Cross;
+			_board.UpdateBoard(_newPositionObject);
+		}
 
 		// Debug.Log(string.Format("{0}, {1}, {2}",_board.Board[0,0].gameObject.tag, _board.Board[0,1].gameObject.tag,
 		//  _board.Board[0,2].gameObject.tag));
@@ -183,76 +165,99 @@ public class GameManagement : MonoBehaviour
 		// Debug.Log(string.Format("{0}, {1}, {2}",_boardCopy[2,0].gameObject.tag, _boardCopy[2,1].gameObject.tag,
 		//  _boardCopy[2,2].gameObject.tag));
 
+		Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[0,0], _scoreArray[0,1], _scoreArray[0,2]));
+		Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[1,0], _scoreArray[1,1], _scoreArray[1,2]));
+		Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[2,0], _scoreArray[2,1], _scoreArray[2,2]));
+
         //Plays the best move found
         Instantiate(_newPositionObject, _newPositionObject.transform.position, Quaternion.identity);
-
-		Debug.Log(string.Format("{0}, {1}, {2}",_scoreArray[0,0], _scoreArray[0,1], _scoreArray[0,2]));
-		Debug.Log(string.Format("{0}, {1}, {2}",_scoreArray[1,0], _scoreArray[1,1], _scoreArray[1,2]));
-		Debug.Log(string.Format("{0}, {1}, {2}",_scoreArray[2,0], _scoreArray[2,1], _scoreArray[2,2]));
-
-        //Clear cellPiecesArray cloned
-        //ClearArray(_boardCopy);
-		//ClearArray(_scoreArray);
     }
 
     private int Minimax(GameObject[,] _b, int _depth, bool firstTime = false)
-    {
-        var _gameWonResult = _board.CheckIfGameIsOver(_b);
+	{
+		var _gameWonResult = _board.CheckIfGameIsOver(_b);
 
-        if (_gameWonResult != _board.EmptyCell || _depth == 0)
-            return CheckWhichPlayerWon(_gameWonResult);
+		if (_gameWonResult != _board.EmptyCell || _depth == 0)
+			return CheckWhichPlayerWon(_gameWonResult);
 
-        if (_aiTurnCount == PlayerControl.AI)
-        {
-            int max = -999;
-            for (var i = 0; i < _board.BoardSize; i++)
-            {
-                for (var j = 0; j < _board.BoardSize; j++)
-                {
-                    if (_b[i, j].gameObject.tag == _board.EmptyCell.gameObject.tag)
-                    {
-                        _b[i, j] = _playerTwoDesignatedPawn;
-                        _aiTurnCount = PlayerControl.Human;
-                        int next = Minimax(_b, _depth - 1);
+		if (_aiTurnCount == PlayerControl.AI)
+		{
+			int max = -99;
+			for (var i = 0; i < _board.BoardSize; i++)
+			{
+				for (var j = 0; j < _board.BoardSize; j++)
+				{
+					//Check for the first empty Spot
+					if (_b[i, j].gameObject.tag == _board.EmptyCell.gameObject.tag)
+					{
+						//Assign Human player pawn to the empty spot
+						_b[i, j] = _playerTwoDesignatedPawn;
+						_aiTurnCount = PlayerControl.Human;
 
-                        if (next > max)
-                        {
-                            max = next;
-                            // if (firstTime)
-                            // {
-                            //     _bestLine = i;
-                            //     _bestColumn = j;
-							// 	Debug.Log(string.Format("{0}, {1}", i, j));
-                            // }
-                        }
-                    }
-                }
-            }
-            return max;
-        }
-        else
-        {
-            int min = 999;
-            for (var i = 0; i < _board.BoardSize; i++)
-            {
-                for (var j = 0; j < _board.BoardSize; j++)
-                {
-                    if (_b[i, j].gameObject.tag == _board.EmptyCell.gameObject.tag)
-                    {
-                        _b[i, j] = _playerOneDesignatedPawn;
-                        _aiTurnCount = PlayerControl.AI;
-                        int next = Minimax(_b, _depth - 1);
+						//Calls Minimax recursively, sending the updated temp board
+						//and decreasing the depth by one!
+						int next = Minimax(_b, _depth - 1);
 
-                        if (next < min)
-                        {
-                            min = next;
-                        }
-                    }
-                }
-            }
-            return min;
-        }        
-    }
+						//For debugging purposes, the _scoreArray is updated
+						//with the next value
+						_scoreArray[i,j] = next;
+
+						//If the terminal node returns a next smaller number,
+						//thats the new min (favorite move for the AI Player)
+						if (next > max)
+						{
+							max = next;
+
+							//If this is the initial board (or the board to choose
+							//a movement), then update the game board array index variables
+							if (firstTime)
+							{
+								_bestLine = i;
+								_bestColumn = j;
+							}
+						}
+
+						//Resets the temporary board for the next moves
+						_b[i, j] = _board.EmptyCell;
+					}
+				}
+			}
+			return max;
+		}
+		else
+		{
+			int min = 99;
+			for (var i = 0; i < _board.BoardSize; i++)
+			{
+				for (var j = 0; j < _board.BoardSize; j++)
+				{
+					if (_b[i, j].gameObject.tag == _board.EmptyCell.gameObject.tag)
+					{
+						//Assign Human player pawn to the empty spot
+						_b[i, j] = _playerOneDesignatedPawn;
+
+						//Passes the turn for the AI
+						_aiTurnCount = PlayerControl.AI;
+
+						//Calls Minimax recursively, sending the updated temp board
+						//and decreasing the depth by one!
+						int next = Minimax(_b, _depth - 1);
+
+						//If the terminal node returns a next smaller number,
+						//thats the new min (favorite move for the Human Player)
+						if (next < min)
+						{
+							min = next;
+						}
+
+						//Resets the temporary board for the next moves
+						_b[i, j] = _board.EmptyCell;
+					}
+				}
+			}
+			return min;
+		}        
+	}
 
 	private int CheckHowManyEmptyCells(GameObject[,] _b)
 	{
