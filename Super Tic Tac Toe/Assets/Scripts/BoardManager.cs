@@ -14,6 +14,7 @@ public class BoardManager : MonoBehaviour
 	{
 		Board = new GameObject[BoardSize, BoardSize];
 
+		DontDestroyOnLoad(this.gameObject);
 		BoardInitialSetup();
 	}
 

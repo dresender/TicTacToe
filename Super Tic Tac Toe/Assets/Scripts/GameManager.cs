@@ -9,12 +9,15 @@ public class GameManager : MonoBehaviour
 	public enum Player { PlayerOne, PlayerTwo };
 	public enum PlayerControl { Human, AI }
 	public enum PlayerPawn { Cross, Circle };
+	public enum GameDifficulty { Easy, Hard };
 	public Player Turn;
 	public PlayerControl PlayerOne = PlayerControl.Human;
 	public PlayerControl PlayerTwo = PlayerControl.AI;
 	public PlayerPawn PlayerOnePawn = PlayerPawn.Cross;
 	public PlayerPawn PlayerTwoPawn = PlayerPawn.Circle;
+	public GameDifficulty GameDifficultyChoice;
 	public bool GameOverConfirmed = false;
+	public bool GameStarted = false;
 
 
 	private BoardManager _board;
@@ -33,9 +36,11 @@ public class GameManager : MonoBehaviour
 		_board = GameBoard.GetComponent<BoardManager>();
 		_scoreArray = new int[_board.BoardSize, _board.BoardSize];
 		SetupPlayerPawns();
+		DontDestroyOnLoad(this.gameObject);
 
 		//Temporary
 		_currentPlayerController = PlayerControl.Human;
+		GameDifficultyChoice = GameDifficulty.Hard;
 	}
 
 	public void PlaceNewPiece(GameObject obj)
@@ -126,7 +131,7 @@ public class GameManager : MonoBehaviour
 
 		//Minimax Call
 		_aiTurnCount = PlayerControl.AI;
-		int _value = Minimax(_boardCopy, _emptyCells, true);
+		Minimax(_boardCopy, _emptyCells, true);
 
 		//Move Position from Minimax
 		var _newMovePosition = _board.Board[_bestLine, _bestColumn];

@@ -11,8 +11,8 @@ public class SplashScreen : MonoBehaviour {
 	}
 	IEnumerator LoadMainScene()
 	{
-		yield return new WaitForSeconds(4f);
+		yield return new WaitForSeconds(3.9f);
 
-		SceneManager.LoadScene("Main");
+		SceneManager.LoadScene("Menu");
 	}
 }
