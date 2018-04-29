@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
 	private void CheckForGameOverCondition()
 	{
 		//Checking for a victorious player
-		_victoriousPlayer = _board.CheckIfGameIsOver(_board.Board);
+		_victoriousPlayer = _board.CheckIfGameIsOver(_board.Board, false);
 		if (_victoriousPlayer != _board.EmptyCell)
 			GameOverConfirmed = true;
 
@@ -155,20 +155,6 @@ public class GameManager : MonoBehaviour
 			_newPositionObject = _board.Cross;
 			_board.UpdateBoard(_newPositionObject);
 		}
-
-		// Debug.Log(string.Format("{0}, {1}, {2}",_board.Board[0,0].gameObject.tag, _board.Board[0,1].gameObject.tag,
-		//  _board.Board[0,2].gameObject.tag));
-		// Debug.Log(string.Format("{0}, {1}, {2}",_board.Board[1,0].gameObject.tag, _board.Board[1,1].gameObject.tag,
-		//  _board.Board[1,2].gameObject.tag));
-		// Debug.Log(string.Format("{0}, {1}, {2}",_board.Board[2,0].gameObject.tag, _board.Board[2,1].gameObject.tag,
-		//  _board.Board[2,2].gameObject.tag));
-
-		// Debug.Log(string.Format("{0}, {1}, {2}",_boardCopy[0,0].gameObject.tag, _boardCopy[0,1].gameObject.tag,
-		//  _boardCopy[0,2].gameObject.tag));
-		// Debug.Log(string.Format("{0}, {1}, {2}",_boardCopy[1,0].gameObject.tag, _boardCopy[1,1].gameObject.tag,
-		//  _boardCopy[1,2].gameObject.tag));
-		// Debug.Log(string.Format("{0}, {1}, {2}",_boardCopy[2,0].gameObject.tag, _boardCopy[2,1].gameObject.tag,
-		//  _boardCopy[2,2].gameObject.tag));
 
 		Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[0,0], _scoreArray[0,1], _scoreArray[0,2]));
 		Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[1,0], _scoreArray[1,1], _scoreArray[1,2]));

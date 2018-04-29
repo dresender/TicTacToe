@@ -290,7 +290,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -559460699
   m_SortingLayer: -1
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 1e94eabf75ecf634bb2997bd0276509a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -386,7 +386,7 @@ GameObject:
   - component: {fileID: 1365896309}
   - component: {fileID: 1365896308}
   m_Layer: 0
-  m_Name: EnytPortrait
+  m_Name: EntPortrait
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -611,6 +611,14 @@ MonoBehaviour:
   Cross: {fileID: 1617003965830132, guid: ab9dcafc65ec0d341af6140ee28e4c49, type: 2}
   Circle: {fileID: 1380581593720112, guid: f99c052e4ea801a4681286979d7495c7, type: 2}
   EmptyCell: {fileID: 1716534901468500, guid: 217ef6cea3eb16f43a8312201caecd98, type: 2}
+  DiagonalLeftLine: {fileID: 1170139338223012, guid: be21866b86f71e54290fc74c8ffe7849,
+    type: 2}
+  DiagonalRightLine: {fileID: 1857389704512708, guid: b546e227a5033f9479a0e361abee925d,
+    type: 2}
+  HorizontalLine: {fileID: 1807327518206970, guid: e57ea2c072a781447b62ed671343c961,
+    type: 2}
+  VerticalLine: {fileID: 1537207821414000, guid: cd54269516cc1f349990185225d59c16,
+    type: 2}
 --- !u!1 &1709004151
 GameObject:
   m_ObjectHideFlags: 0

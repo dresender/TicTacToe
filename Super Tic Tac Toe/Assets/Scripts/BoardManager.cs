@@ -8,6 +8,10 @@ public class BoardManager : MonoBehaviour
 	public GameObject Cross;
 	public GameObject Circle;
 	public GameObject EmptyCell;
+	public GameObject DiagonalLeftLine;
+	public GameObject DiagonalRightLine;
+	public GameObject HorizontalLine;
+	public GameObject VerticalLine;
 	public GameObject[,] Board;
 
 	void Start()
@@ -48,30 +52,30 @@ public class BoardManager : MonoBehaviour
 		}
 	}	
 
-	public GameObject CheckIfGameIsOver(GameObject[,] _b)
+	public GameObject CheckIfGameIsOver(GameObject[,] _b, bool _minimaxCheck = true)
 	{
 		var _gameOver = EmptyCell;
 
-		_gameOver = CheckGameOverLines(_b);
+		_gameOver = CheckGameOverLines(_b, _minimaxCheck);
 		if (_gameOver != EmptyCell)
 			return _gameOver;
 
-		_gameOver = CheckGameOverColumns(_b);
+		_gameOver = CheckGameOverColumns(_b, _minimaxCheck);
 		if (_gameOver != EmptyCell)
 			return _gameOver;
 
-		_gameOver = CheckGameOverDiagLeft(_b);
+		_gameOver = CheckGameOverDiagLeft(_b, _minimaxCheck);
 		if (_gameOver != EmptyCell)
 			return _gameOver;
 
-		_gameOver = CheckGameOverDiagRight(_b);
+		_gameOver = CheckGameOverDiagRight(_b, _minimaxCheck);
 		if (_gameOver != EmptyCell)
 			return _gameOver;
 
 		return _gameOver;
 	}
 
-	private GameObject CheckGameOverLines(GameObject[,] Board)
+	private GameObject CheckGameOverLines(GameObject[,] Board, bool _minimaxCheck)
 	{
 		var _cross = 0;
 		var _circle = 0;
@@ -86,7 +90,19 @@ public class BoardManager : MonoBehaviour
 			}
 
 			if (_cross == BoardSize || _circle == BoardSize)
-				//Debug.Log(string.Format("CheckGameOverLines"));
+			{
+				if (!_minimaxCheck)
+				{
+					if (i == 0)
+						Instantiate(HorizontalLine, new Vector2(0f, 3f), Quaternion.identity);
+					
+					if (i == 1)
+						Instantiate(HorizontalLine, new Vector2(0f, 0f), Quaternion.identity);
+					
+					if (i == 2)
+						Instantiate(HorizontalLine, new Vector2(0f, -3f), Quaternion.identity);
+				}						
+			}
 
 			if (_cross == BoardSize)
 				return Cross;
@@ -101,7 +117,7 @@ public class BoardManager : MonoBehaviour
 		return EmptyCell;
 	}
 
-	private GameObject CheckGameOverColumns(GameObject[,] Board)
+	private GameObject CheckGameOverColumns(GameObject[,] Board, bool _minimaxCheck)
 	{
 		var _cross = 0;
 		var _circle = 0;
@@ -116,13 +132,26 @@ public class BoardManager : MonoBehaviour
 			}
 
 			if (_cross == BoardSize || _circle == BoardSize)
-				//Debug.Log(string.Format("CheckGameOverColumns"));
+			{
+				if (!_minimaxCheck)
+				{
+					if (j == 0)
+						Instantiate(VerticalLine, new Vector2(3f, 0f), Quaternion.identity);
+					
+					if (j == 1)
+						Instantiate(VerticalLine, new Vector2(0f, 0f), Quaternion.identity);
+					
+					if (j == 2)
+						Instantiate(VerticalLine, new Vector2(-3f, 0f), Quaternion.identity);
+				}						
+			}
 
 			if (_cross == BoardSize)
 				return Cross;
 
 			if (_circle == BoardSize)
-				return Circle;
+				return Circle;			
+			
 
 			_cross = 0;
 			_circle = 0;
@@ -131,7 +160,7 @@ public class BoardManager : MonoBehaviour
 		return EmptyCell;
 	}	
 
-	private GameObject CheckGameOverDiagLeft(GameObject[,] Board)
+	private GameObject CheckGameOverDiagLeft(GameObject[,] Board, bool _minimaxCheck)
 	{
 		var _cross = 0;
 		var _circle = 0;
@@ -144,8 +173,11 @@ public class BoardManager : MonoBehaviour
 		}
 
 		if (_cross == BoardSize || _circle == BoardSize)
-			//Debug.Log(string.Format("CheckGameOverDiagLeft"));
-		
+		{
+			if (!_minimaxCheck)
+				Instantiate(DiagonalLeftLine, new Vector2(0f, 0f), Quaternion.identity);
+		}		
+
 		if (_cross == BoardSize)
 			return Cross;
 
@@ -155,7 +187,7 @@ public class BoardManager : MonoBehaviour
 		return EmptyCell;
 	}
 
-	private GameObject CheckGameOverDiagRight(GameObject[,] Board)
+	private GameObject CheckGameOverDiagRight(GameObject[,] Board, bool _minimaxCheck)
 	{
 		var _cross = 0;
 		var _circle = 0;
@@ -169,13 +201,16 @@ public class BoardManager : MonoBehaviour
 		}
 
 		if (_cross == BoardSize || _circle == BoardSize)
-			//Debug.Log(string.Format("CheckGameOverDiagRight"));
+		{
+			if (!_minimaxCheck)
+				Instantiate(DiagonalRightLine, new Vector2(0f, 0f), Quaternion.identity);
+		}
 
 		if (_cross == BoardSize)
-			return Cross;
+			return Cross;		
 
 		if (_circle == BoardSize)
-			return Circle;
+			return Circle;			
 
 		return EmptyCell;
 	}
