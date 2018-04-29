@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 2b87087234e5209438e6e3209fa9736c
+timeCreated: 1525011915
+licenseType: Pro
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Under My Umbrella DEMO
+  fontNames:
+  - Under My Umbrella DEMO
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

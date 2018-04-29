@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: f43fd554868df0b4da619518f18bd8e4
+timeCreated: 1525006986
+licenseType: Pro
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Creaky Frank
+  fontNames:
+  - Creaky Frank
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
