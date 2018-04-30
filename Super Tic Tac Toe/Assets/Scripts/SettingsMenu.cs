@@ -12,6 +12,7 @@ public class SettingsMenu : MonoBehaviour
 	public Slider DifficultySlider;
 
 	private GameManager _gameManagerScript;
+	private GameObject _gameManagerObject;
 
 	void Start()
 	{
@@ -27,8 +28,7 @@ public class SettingsMenu : MonoBehaviour
 		SetGameMode();
 		SetDifficulty();
 		SetInitiativeSelection();
-		
-		//SettingsMenuObject.SetActive(false);
+
 		SceneManager.LoadScene("Main");
 
 		_gameManagerScript.GameStarted = true;
@@ -45,22 +45,22 @@ public class SettingsMenu : MonoBehaviour
 	private void SetInitiativeSelection()
 	{
 		// if (InitiativeDropDown.value == 0)
-		// 	_gameManagerScript.CurrentPlayerController = GameManager.PlayerControl.AI;
+		// 	_gameManagerScript.CurrentPlayerController = _gameManagerScript.FirstPlayer;
 		// else if (InitiativeDropDown.value == 1)
-		// 	_gameManagerScript.CurrentPlayerController = GameManager.PlayerControl.Human;
+		// 	_gameManagerScript.CurrentPlayerController = _gameManagerScript.SecondPlayer;
 		// else
 		// {
 		// 	var _random = UnityEngine.Random.Range(0f, 100f);
 
 		// 	if (_random > 50)
-		// 		_gameManagerScript.CurrentPlayerController = GameManager.PlayerControl.Human;
+		// 		_gameManagerScript.CurrentPlayerController = _gameManagerScript.FirstPlayer;
 		// 	else
-		// 		_gameManagerScript.CurrentPlayerController = GameManager.PlayerControl.AI;
+		// 		_gameManagerScript.CurrentPlayerController = _gameManagerScript.SecondPlayer;
 		// }
 
 		// if (GameModeSlider.value == 1)
 		// {
-		// 	_gameManagerScript.CurrentPlayerController = GameManager.PlayerControl.Human;
+		// 	_gameManagerScript.CurrentPlayerController = _gameManagerScript.FirstPlayer;
 		// }			
 	}
 

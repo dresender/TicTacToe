@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour
 	{
 		_board = GameBoard.GetComponent<BoardManager>();
 		_scoreArray = new int[_board.BoardSize, _board.BoardSize];
-		//SetupPlayerPawns();
 		DontDestroyOnLoad(this.gameObject);
 
 		//Temporary
@@ -77,8 +76,8 @@ public class GameManager : MonoBehaviour
 
 	public void ResetGame()
 	{
-		//_board.ClearBoard();
-		//_board.BoardInitialSetup();
+		_board.ClearBoard();
+		_board.BoardInitialSetup();
 		CrossWonText.SetActive(false);
 		CircleWonText.SetActive(false);
 		DrawText.SetActive(false);

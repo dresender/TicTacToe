@@ -19,7 +19,7 @@ public class BoardManager : MonoBehaviour
 		Board = new GameObject[BoardSize, BoardSize];
 
 		DontDestroyOnLoad(this.gameObject);
-		BoardInitialSetup();
+		//BoardInitialSetup();
 	}
 
 	public void UpdateBoard(GameObject _gameObject)
@@ -33,6 +33,34 @@ public class BoardManager : MonoBehaviour
 					Board[i,j] = _gameObject;
 				}
 			}
+		}
+	}
+
+	public void ClearBoard()
+	{
+		GameObject[] _gameObjectsCircle = new GameObject[BoardSize * BoardSize];
+		GameObject[] _gameObjectsCross = new GameObject[BoardSize * BoardSize];
+		GameObject[] _gameObjectsEmpty = new GameObject[BoardSize * BoardSize];
+
+		_gameObjectsCircle = GameObject.FindGameObjectsWithTag("Circle");
+
+		for (int i = 0; i < _gameObjectsCircle.Length; i++)
+		{
+            Destroy(_gameObjectsCircle[i]);
+		}
+
+		_gameObjectsCross = GameObject.FindGameObjectsWithTag("Cross");
+
+		for (int i = 0; i < _gameObjectsCross.Length; i++)
+		{
+            Destroy(_gameObjectsCross[i]);
+		}
+
+		_gameObjectsEmpty = GameObject.FindGameObjectsWithTag("Empty");
+
+		for (int i = 0; i < _gameObjectsEmpty.Length; i++)
+		{
+            Destroy(_gameObjectsEmpty[i]);
 		}
 	}
 
