@@ -12,11 +12,12 @@ public class GameManager : MonoBehaviour
 	public enum PlayerPawn { Cross, Circle };
 	public enum GameDifficulty { Easy, Hard };
 	public Player Turn;
-	public PlayerControl PlayerOne = PlayerControl.Human;
-	public PlayerControl PlayerTwo = PlayerControl.AI;
+	public PlayerControl FirstPlayer = PlayerControl.Human;
+	public PlayerControl SecondPlayer = PlayerControl.AI;
 	public PlayerPawn PlayerOnePawn = PlayerPawn.Cross;
 	public PlayerPawn PlayerTwoPawn = PlayerPawn.Circle;
 	public GameDifficulty GameDifficultyChoice;
+	public PlayerControl CurrentPlayerController;
 	public bool GameOverConfirmed = false;
 	public bool GameStarted = false;
 
@@ -27,7 +28,6 @@ public class GameManager : MonoBehaviour
 	private GameObject _playerTwoDesignatedPawn;
 	private GameObject _victoriousPlayer;
 	private PlayerControl _aiTurnCount;
-	private PlayerControl _currentPlayerController;
 	private int _bestLine;
 	private int _bestColumn;
 	private int[,] _scoreArray;
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
 		DontDestroyOnLoad(this.gameObject);
 
 		//Temporary
-		_currentPlayerController = PlayerControl.Human;
+		CurrentPlayerController = FirstPlayer;
 		GameDifficultyChoice = GameDifficulty.Hard;
 		_playerOneDesignatedPawn = _board.Cross;
 		_playerTwoDesignatedPawn = _board.Circle;
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
 				_pawn = _playerTwoDesignatedPawn;
 
 			//Human Player
-			if (_currentPlayerController == PlayerControl.Human && !GameOverConfirmed)
+			if (CurrentPlayerController == PlayerControl.Human && !GameOverConfirmed)
 			{
 				var _instantiatedGameObject = Instantiate(_pawn, obj.transform.position, Quaternion.identity);
 				_board.UpdateBoard(_instantiatedGameObject);
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
 				CheckForGameOverCondition();
 			}
 			//AI Player
-			if (_currentPlayerController == PlayerControl.AI && !GameOverConfirmed)
+			if (CurrentPlayerController == PlayerControl.AI && !GameOverConfirmed)
 			{
 				MakeAIMove();
 				Turn = ChangePlayerTurn(Turn);
@@ -86,19 +86,6 @@ public class GameManager : MonoBehaviour
 		GameStarted = true;
 	}
 
-	// private void SetupPlayerPawns()
-	// {
-	// 	if (PlayerOnePawn == PlayerPawn.Cross)
-	// 		_playerOneDesignatedPawn = _board.Cross;
-	// 	else
-	// 		_playerOneDesignatedPawn = _board.Circle;
-
-	// 	if (PlayerTwoPawn == PlayerPawn.Cross)
-	// 		_playerTwoDesignatedPawn = _board.Cross;
-	// 	else
-	// 		_playerTwoDesignatedPawn = _board.Circle;
-	// }
-
 	private Player ChangePlayerTurn(Player _p)
 	{
 		if (_p == Player.PlayerOne)
@@ -106,10 +93,10 @@ public class GameManager : MonoBehaviour
 		else
 			_p = Player.PlayerOne;
 		
-		if (_currentPlayerController == PlayerControl.Human)
-			_currentPlayerController = PlayerControl.AI;
+		if (CurrentPlayerController == FirstPlayer)
+			CurrentPlayerController = SecondPlayer;
 		else
-			_currentPlayerController = PlayerControl.Human;
+			CurrentPlayerController = FirstPlayer;
 
 		return _p;
 	}
@@ -185,9 +172,9 @@ public class GameManager : MonoBehaviour
 			_board.UpdateBoard(_newPositionObject);
 		}
 
-		Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[0,0], _scoreArray[0,1], _scoreArray[0,2]));
-		Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[1,0], _scoreArray[1,1], _scoreArray[1,2]));
-		Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[2,0], _scoreArray[2,1], _scoreArray[2,2]));
+		// Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[0,0], _scoreArray[0,1], _scoreArray[0,2]));
+		// Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[1,0], _scoreArray[1,1], _scoreArray[1,2]));
+		// Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[2,0], _scoreArray[2,1], _scoreArray[2,2]));
 
         //Plays the best move found
         Instantiate(_newPositionObject, _newPositionObject.transform.position, Quaternion.identity);

@@ -37,19 +37,31 @@ public class SettingsMenu : MonoBehaviour
 	private void SetGameMode()
 	{
 		if (GameModeSlider.value == 0)
-			_gameManagerScript.PlayerTwo = GameManager.PlayerControl.AI;
+			_gameManagerScript.SecondPlayer = GameManager.PlayerControl.AI;
 		else
-			_gameManagerScript.PlayerTwo = GameManager.PlayerControl.Human;
+			_gameManagerScript.SecondPlayer = GameManager.PlayerControl.Human;
 	}
 
 	private void SetInitiativeSelection()
 	{
 		// if (InitiativeDropDown.value == 0)
-		// 	_gameManagerScript.PlayerTwo = GameManager.PlayerControl.AI;
+		// 	_gameManagerScript.CurrentPlayerController = GameManager.PlayerControl.AI;
 		// else if (InitiativeDropDown.value == 1)
-		// 	_gameManagerScript.PlayerTwo = GameManager.PlayerControl.Human;
+		// 	_gameManagerScript.CurrentPlayerController = GameManager.PlayerControl.Human;
 		// else
-		// 	_gameManagerScript.PlayerTwo = GameManager.PlayerControl.Human;
+		// {
+		// 	var _random = UnityEngine.Random.Range(0f, 100f);
+
+		// 	if (_random > 50)
+		// 		_gameManagerScript.CurrentPlayerController = GameManager.PlayerControl.Human;
+		// 	else
+		// 		_gameManagerScript.CurrentPlayerController = GameManager.PlayerControl.AI;
+		// }
+
+		// if (GameModeSlider.value == 1)
+		// {
+		// 	_gameManagerScript.CurrentPlayerController = GameManager.PlayerControl.Human;
+		// }			
 	}
 
 	private void SetDifficulty()

@@ -136,13 +136,13 @@ public class BoardManager : MonoBehaviour
 				if (!_minimaxCheck)
 				{
 					if (j == 0)
-						Instantiate(VerticalLine, new Vector2(3f, 0f), Quaternion.identity);
+						Instantiate(VerticalLine, new Vector2(-3f, 0f), Quaternion.identity);
 					
 					if (j == 1)
 						Instantiate(VerticalLine, new Vector2(0f, 0f), Quaternion.identity);
 					
 					if (j == 2)
-						Instantiate(VerticalLine, new Vector2(-3f, 0f), Quaternion.identity);
+						Instantiate(VerticalLine, new Vector2(3f, 0f), Quaternion.identity);
 				}						
 			}
 
@@ -197,6 +197,7 @@ public class BoardManager : MonoBehaviour
 		for (int i = 0; i < BoardSize; i++)
 		{
 				_cross += Board[i,j].gameObject.tag == Cross.gameObject.tag ? 1 : 0;
+				_circle += Board[i,j].gameObject.tag == Circle.gameObject.tag ? 1 : 0;
 				j--;		
 		}
 
