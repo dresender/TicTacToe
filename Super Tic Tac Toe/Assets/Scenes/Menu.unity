@@ -1755,8 +1755,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -559460699
-  m_SortingLayer: -1
+  m_SortingLayerID: -1591439081
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 8d5b660a0b7be1c4ca742b61870bd5c7, type: 3}
   m_Color: {r: 1, g: 0.50735295, b: 0.50735295, a: 1}
@@ -2505,6 +2505,7 @@ MonoBehaviour:
   DrawText: {fileID: 1691511076}
   CrossWonText: {fileID: 1878945662}
   CircleWonText: {fileID: 1445123602}
+  AudioManagerObject: {fileID: 1645784478}
   Turn: 0
   FirstPlayer: 0
   SecondPlayer: 1
@@ -4222,13 +4223,33 @@ MonoBehaviour:
   Sounds:
   - Name: ThemeMusic
     Clip: {fileID: 8300000, guid: 5a145d9de2eb0c0449a0438ed2793db6, type: 3}
-    Volume: 0.5
+    Volume: 0.25
     Pitch: 1
+    Loop: 0
     Source: {fileID: 0}
-  - Name: MenuButtonFeedback
+  - Name: MenuButtonSound
     Clip: {fileID: 8300000, guid: 6057011120035fa46bb4b859dec30fbd, type: 3}
     Volume: 1
     Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: LumberJackVictory
+    Clip: {fileID: 8300000, guid: bed789f73d310df4ba2dad3f345676c6, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: EntVictory
+    Clip: {fileID: 8300000, guid: 6fb96082d0b643d4ab0e77198e6bcac0, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: DrawSound
+    Clip: {fileID: 8300000, guid: 5b169ca4383832e4abf0ff5734eae727, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
     Source: {fileID: 0}
 --- !u!4 &1645784480
 Transform:
@@ -4608,6 +4629,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameManagerObject: {fileID: 993733744}
+  AudioManagerObject: {fileID: 1645784478}
   GameModeSlider: {fileID: 1281949589}
   InitiativeDropDown: {fileID: 1542732942}
   DifficultySlider: {fileID: 1427344969}

@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
 	public GameObject GameBoard;
 	public GameObject DrawText, CrossWonText, CircleWonText;
+	public GameObject AudioManagerObject;
 	public enum Player { PlayerOne, PlayerTwo };
 	public enum PlayerControl { Human, AI }
 	public enum PlayerPawn { Cross, Circle };
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
 	private GameObject _playerOneDesignatedPawn;
 	private GameObject _playerTwoDesignatedPawn;
 	private GameObject _victoriousPlayer;
+	private AudioManager _audioManager;
 	private PlayerControl _aiTurnCount;
 	private int _bestLine;
 	private int _bestColumn;
@@ -35,6 +37,7 @@ public class GameManager : MonoBehaviour
 	void Start()
 	{
 		_board = GameBoard.GetComponent<BoardManager>();
+		_audioManager = AudioManagerObject.GetComponent<AudioManager>();
 		_scoreArray = new int[_board.BoardSize, _board.BoardSize];
 		DontDestroyOnLoad(this.gameObject);
 
@@ -109,9 +112,15 @@ public class GameManager : MonoBehaviour
 			GameOverConfirmed = true;
 
 			if (_victoriousPlayer.gameObject.tag == _board.Cross.gameObject.tag)
+			{
 				CrossWonText.SetActive(true);
+				_audioManager.Play("LumberJackVictory");
+			}
 			else
+			{
 				CircleWonText.SetActive(true);
+				_audioManager.Play("EntVictory");
+			}
 		}
 
 		var count = 0;
@@ -132,6 +141,7 @@ public class GameManager : MonoBehaviour
 			if (_victoriousPlayer == _board.EmptyCell)
 			{
 				DrawText.SetActive(true);
+				_audioManager.Play("DrawSound");
 			}
 		}
 	}

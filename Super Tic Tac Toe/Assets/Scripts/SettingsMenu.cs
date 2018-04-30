@@ -7,12 +7,14 @@ using UnityEngine.SceneManagement;
 public class SettingsMenu : MonoBehaviour 
 {
 	public GameObject GameManagerObject;
+	public GameObject AudioManagerObject;
 	public Slider GameModeSlider;
 	public Dropdown InitiativeDropDown;
 	public Slider DifficultySlider;
 
 	private GameManager _gameManagerScript;
 	private GameObject _gameManagerObject;
+	private AudioManager _audioManager;
 
 	void Start()
 	{
@@ -21,6 +23,10 @@ public class SettingsMenu : MonoBehaviour
 		DifficultySlider.value = 1f;
 
 		_gameManagerScript = GameManagerObject.GetComponent<GameManager>();
+		_audioManager = AudioManagerObject.GetComponent<AudioManager>();
+
+		GameModeSlider.onValueChanged.AddListener(delegate {ValueChangeCheck(); });
+		DifficultySlider.onValueChanged.AddListener(delegate {ValueChangeCheck(); });
 	}
 
 	public void PlayGame()
@@ -71,4 +77,9 @@ public class SettingsMenu : MonoBehaviour
 		else
 			_gameManagerScript.GameDifficultyChoice = GameManager.GameDifficulty.Hard;
 	}	
+
+	public void ValueChangeCheck()
+    {
+			_audioManager.Play("MenuButtonSound");
+    }
 }
