@@ -4697,6 +4697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b783ad2209405724ea0871235f427bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameMainMenu: {fileID: 833995809}
   GameManagerObject: {fileID: 993733744}
   AudioManagerObject: {fileID: 1645784478}
   GameModeSlider: {fileID: 1281949589}

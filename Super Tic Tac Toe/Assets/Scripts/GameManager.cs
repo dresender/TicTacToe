@@ -44,9 +44,9 @@ public class GameManager : MonoBehaviour
 		//Temporary
 		CurrentPlayerController = FirstPlayer;
 		GameDifficultyChoice = GameDifficulty.Hard;
+		Turn = Player.PlayerOne;
 		_playerOneDesignatedPawn = _board.Cross;
 		_playerTwoDesignatedPawn = _board.Circle;
-		Turn = Player.PlayerOne;
 	}
 
 	public void PlaceNewPiece(GameObject obj)
@@ -146,6 +146,11 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	private void SetScoreText()
+	{
+
+	}
+
 	private void MakeAIMove()
     {
 		//Clone the game Board array to use in the AI searching movement script
@@ -169,18 +174,8 @@ public class GameManager : MonoBehaviour
 			if (_random > 4)
 				Minimax(_boardCopy, _emptyCells, true);
 			else
-			{				
-				for (var i = 0; i < _board.BoardSize; i++)
-				{
-					for (var j = 0; j < _board.BoardSize; j++)
-					{
-						if (_board.Board[i, j].gameObject.tag != _board.EmptyCell.gameObject.tag)
-						{
-							_bestLine = i;
-							_bestColumn = j;
-						}
-					}
-				}
+			{
+				Minimax(_boardCopy, _emptyCells, true);
 			}
 		}
 		

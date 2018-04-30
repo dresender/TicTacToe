@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SettingsMenu : MonoBehaviour 
 {
+	public GameObject GameMainMenu;
 	public GameObject GameManagerObject;
 	public GameObject AudioManagerObject;
 	public Slider GameModeSlider;
@@ -38,6 +39,9 @@ public class SettingsMenu : MonoBehaviour
 		SceneManager.LoadScene("Main");
 
 		_gameManagerScript.GameStarted = true;
+
+		this.gameObject.SetActive(false);
+		GameMainMenu.SetActive(true);
 	}
 
 	private void SetGameMode()
