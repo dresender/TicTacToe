@@ -4,12 +4,19 @@ using System;
 
 public class AudioManager : MonoBehaviour 
 {
-
 	public Sound[] Sounds;
-
+	public static AudioManager Instance;
 
 	void Awake ()
 	{
+		// if (Instance == null)
+		// 	Instance = this;
+		// else
+		// {
+		// 	Destroy(gameObject);
+		// 	return;
+		// }
+
 		foreach (Sound s in Sounds)
 		{
 			s.Source = gameObject.AddComponent<AudioSource>();
