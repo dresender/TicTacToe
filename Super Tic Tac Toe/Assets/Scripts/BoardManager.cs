@@ -13,13 +13,18 @@ public class BoardManager : MonoBehaviour
 	public GameObject HorizontalLine;
 	public GameObject VerticalLine;
 	public GameObject[,] Board;
+	public GameObject AudioManagerObject;
+
+
+	private AudioManager _audioManager;
 
 	void Start()
 	{
 		Board = new GameObject[BoardSize, BoardSize];
+		_audioManager = AudioManagerObject.GetComponent<AudioManager>();
 
 		DontDestroyOnLoad(this.gameObject);
-		//BoardInitialSetup();
+		_audioManager.Play("ThemeMusic");
 	}
 
 	public void UpdateBoard(GameObject _gameObject)
