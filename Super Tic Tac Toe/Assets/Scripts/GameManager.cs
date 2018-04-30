@@ -164,33 +164,26 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			var _random = UnityEngine.Random.Range(0f, 100f);
+			var _random = UnityEngine.Random.Range(0, 6);
 
-			if (_random > 50f)
+			if (_random > 4)
 				Minimax(_boardCopy, _emptyCells, true);
 			else
-			{
-				var _randomI = 0;
-				var _randomJ = 0;
-				var _invalidChoice = true;
-
-				do
+			{				
+				for (var i = 0; i < _board.BoardSize; i++)
 				{
-					_randomI = UnityEngine.Random.Range(0, (_board.BoardSize) - 1);
-					_randomJ = UnityEngine.Random.Range(0, (_board.BoardSize) - 1);
-
-					if (_board.Board[_randomI, _randomJ].gameObject.tag == _board.EmptyCell.gameObject.tag)
+					for (var j = 0; j < _board.BoardSize; j++)
 					{
-						_invalidChoice = false;
-						_bestLine = _randomI;
-						_bestColumn = _randomJ;
+						if (_board.Board[i, j].gameObject.tag != _board.EmptyCell.gameObject.tag)
+						{
+							_bestLine = i;
+							_bestColumn = j;
+						}
 					}
-
-				} while (_invalidChoice);
-
+				}
 			}
 		}
-
+		
 		//Move Position from Minimax
 		var _newMovePosition = _board.Board[_bestLine, _bestColumn];
 

@@ -17,6 +17,7 @@ public class BoardManager : MonoBehaviour
 
 
 	private AudioManager _audioManager;
+	private GameObject _winLine;
 
 	void Start()
 	{
@@ -69,6 +70,9 @@ public class BoardManager : MonoBehaviour
 		{
             Destroy(_gameObjectsEmpty[i]);
 		}
+
+		if (_winLine != null)
+			Destroy(_winLine.gameObject);
 	}
 
 	public void BoardInitialSetup()
@@ -129,13 +133,13 @@ public class BoardManager : MonoBehaviour
 				if (!_minimaxCheck)
 				{
 					if (i == 0)
-						Instantiate(HorizontalLine, new Vector2(0f, 3f), Quaternion.identity);
+						_winLine = Instantiate(HorizontalLine, new Vector2(0f, 3f), Quaternion.identity);
 					
 					if (i == 1)
-						Instantiate(HorizontalLine, new Vector2(0f, 0f), Quaternion.identity);
+						_winLine = Instantiate(HorizontalLine, new Vector2(0f, 0f), Quaternion.identity);
 					
 					if (i == 2)
-						Instantiate(HorizontalLine, new Vector2(0f, -3f), Quaternion.identity);
+						_winLine = Instantiate(HorizontalLine, new Vector2(0f, -3f), Quaternion.identity);
 				}						
 			}
 
@@ -171,13 +175,13 @@ public class BoardManager : MonoBehaviour
 				if (!_minimaxCheck)
 				{
 					if (j == 0)
-						Instantiate(VerticalLine, new Vector2(-3f, 0f), Quaternion.identity);
+						_winLine = Instantiate(VerticalLine, new Vector2(-3f, 0f), Quaternion.identity);
 					
 					if (j == 1)
-						Instantiate(VerticalLine, new Vector2(0f, 0f), Quaternion.identity);
+						_winLine = Instantiate(VerticalLine, new Vector2(0f, 0f), Quaternion.identity);
 					
 					if (j == 2)
-						Instantiate(VerticalLine, new Vector2(3f, 0f), Quaternion.identity);
+						_winLine = Instantiate(VerticalLine, new Vector2(3f, 0f), Quaternion.identity);
 				}						
 			}
 
@@ -210,7 +214,7 @@ public class BoardManager : MonoBehaviour
 		if (_cross == BoardSize || _circle == BoardSize)
 		{
 			if (!_minimaxCheck)
-				Instantiate(DiagonalLeftLine, new Vector2(0f, 0f), Quaternion.identity);
+				_winLine = Instantiate(DiagonalLeftLine, new Vector2(0f, 0f), Quaternion.identity);
 		}		
 
 		if (_cross == BoardSize)
@@ -239,7 +243,7 @@ public class BoardManager : MonoBehaviour
 		if (_cross == BoardSize || _circle == BoardSize)
 		{
 			if (!_minimaxCheck)
-				Instantiate(DiagonalRightLine, new Vector2(0f, 0f), Quaternion.identity);
+				_winLine = Instantiate(DiagonalRightLine, new Vector2(0f, 0f), Quaternion.identity);
 		}
 
 		if (_cross == BoardSize)
