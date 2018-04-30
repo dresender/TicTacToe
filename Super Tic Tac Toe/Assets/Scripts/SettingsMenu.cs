@@ -80,6 +80,16 @@ public class SettingsMenu : MonoBehaviour
 
 	public void ValueChangeCheck()
     {
-			_audioManager.Play("MenuButtonSound");
+		_audioManager.Play("MenuButtonSound");
     }
+
+	public void PlayStartMatchSound()
+	{
+		_audioManager.Play("StartMatchButton");
+	}
+
+	public void PlayReturnButtonSound()
+	{
+		_audioManager.Play("ReturnButton");
+	}
 }

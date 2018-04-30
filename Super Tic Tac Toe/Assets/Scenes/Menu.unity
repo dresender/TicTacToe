@@ -418,6 +418,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1786050182}
+        m_MethodName: PlayReturnButtonSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &86640796
@@ -1867,6 +1878,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1786050182}
+        m_MethodName: PlayStartMatchSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &787504042
@@ -2111,6 +2133,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 833995810}
+  - component: {fileID: 833995811}
   m_Layer: 5
   m_Name: MainMenu
   m_TagString: Untagged
@@ -2139,6 +2162,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &833995811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 833995809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dac7d0ed2d25d104ab331774b9ac0dc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioManagerObject: {fileID: 1645784478}
+  PlayButton: {fileID: 1497306667}
+  CreditsButton: {fileID: 805843317}
+  ExitButton: {fileID: 576417842}
 --- !u!1 &842943426
 GameObject:
   m_ObjectHideFlags: 0
@@ -2836,6 +2874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameMainMenu: {fileID: 833995809}
+  AudioManagerObject: {fileID: 1645784478}
 --- !u!1 &1281949587
 GameObject:
   m_ObjectHideFlags: 0
@@ -4223,7 +4262,7 @@ MonoBehaviour:
   Sounds:
   - Name: ThemeMusic
     Clip: {fileID: 8300000, guid: 5a145d9de2eb0c0449a0438ed2793db6, type: 3}
-    Volume: 0.25
+    Volume: 0.15
     Pitch: 1
     Loop: 0
     Source: {fileID: 0}
@@ -4235,7 +4274,7 @@ MonoBehaviour:
     Source: {fileID: 0}
   - Name: LumberJackVictory
     Clip: {fileID: 8300000, guid: bed789f73d310df4ba2dad3f345676c6, type: 3}
-    Volume: 1
+    Volume: 0.3
     Pitch: 1
     Loop: 0
     Source: {fileID: 0}
@@ -4247,6 +4286,36 @@ MonoBehaviour:
     Source: {fileID: 0}
   - Name: DrawSound
     Clip: {fileID: 8300000, guid: 5b169ca4383832e4abf0ff5734eae727, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: StartMatchButton
+    Clip: {fileID: 8300000, guid: 8c206e429ecd22a43a7cfadf170a2356, type: 3}
+    Volume: 0.6
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: ResetButtonSound
+    Clip: {fileID: 8300000, guid: 7862831829c35854f9a06fa4f5e38d44, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: InitialMenuButtons
+    Clip: {fileID: 8300000, guid: e76c61b7772ed3442b3b9483dedf7e29, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: StartGame
+    Clip: {fileID: 8300000, guid: a9de0daca7c8ed6478dc1861a1c23ce0, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: ReturnButton
+    Clip: {fileID: 8300000, guid: ef279010ec3a6204d90bb9697b6b6df0, type: 3}
     Volume: 1
     Pitch: 1
     Loop: 0
@@ -4857,7 +4926,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 35edd71c48b0c08418907bbb2588a2ce, type: 3}
-  m_Color: {r: 0.73333335, g: 0.30588236, b: 0.13725491, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4866,7 +4935,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: f43fd554868df0b4da619518f18bd8e4, type: 3}
-    m_FontSize: 18
+    m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -4877,12 +4946,21 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'LumberJack Johnson Tic Tac Toe Game was made with Unity, using free assets
-    from the Unity Assets Store page.
+  m_Text: 'LumberJack Sprite -> kisspng.com
+
+    Ent Sprite -> cinnamon-equails from DeviantArt.com
+
+    Theme Song -> Funny Song by bensound.com
+
+    Other Assets -> Cartoon UI Jungle Pack.
+
+    Other Sounds from freesound.org.
 
 
+    Thanks for bruno and silvia professors from the university for their support.
 
-    Thanks for bruno and silvia professors from the university for their support.'
+
+    Made with Unity by <color=red>Daniel de Resende Rodrigues.</color>'
 --- !u!222 &1883759523
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4978,6 +5056,17 @@ MonoBehaviour:
       - m_Target: {fileID: 265942582}
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1786050182}
+        m_MethodName: PlayReturnButtonSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

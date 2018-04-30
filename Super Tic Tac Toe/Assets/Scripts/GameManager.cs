@@ -154,9 +154,42 @@ public class GameManager : MonoBehaviour
 		//Find out all the empty cells in the cellPiecesArray cloned
 		var _emptyCells = CheckHowManyEmptyCells(_boardCopy);
 
-		//Minimax Call
+		//Setting up the Minimax turn variable control to AI (starts tree with AI move)
 		_aiTurnCount = PlayerControl.AI;
-		Minimax(_boardCopy, _emptyCells, true);
+
+		//Choosing to use or not Minimax to make AI move based on game difficulty choice
+		if (GameDifficultyChoice == GameDifficulty.Hard)
+		{
+			Minimax(_boardCopy, _emptyCells, true);
+		}
+		else
+		{
+			var _random = UnityEngine.Random.Range(0f, 100f);
+
+			if (_random > 50f)
+				Minimax(_boardCopy, _emptyCells, true);
+			else
+			{
+				var _randomI = 0;
+				var _randomJ = 0;
+				var _invalidChoice = true;
+
+				do
+				{
+					_randomI = UnityEngine.Random.Range(0, (_board.BoardSize) - 1);
+					_randomJ = UnityEngine.Random.Range(0, (_board.BoardSize) - 1);
+
+					if (_board.Board[_randomI, _randomJ].gameObject.tag == _board.EmptyCell.gameObject.tag)
+					{
+						_invalidChoice = false;
+						_bestLine = _randomI;
+						_bestColumn = _randomJ;
+					}
+
+				} while (_invalidChoice);
+
+			}
+		}
 
 		//Move Position from Minimax
 		var _newMovePosition = _board.Board[_bestLine, _bestColumn];

@@ -43,6 +43,8 @@ public class BoardManager : MonoBehaviour
 
 	public void ClearBoard()
 	{
+		_audioManager.Play("ResetButtonSound");
+
 		GameObject[] _gameObjectsCircle = new GameObject[BoardSize * BoardSize];
 		GameObject[] _gameObjectsCross = new GameObject[BoardSize * BoardSize];
 		GameObject[] _gameObjectsEmpty = new GameObject[BoardSize * BoardSize];
