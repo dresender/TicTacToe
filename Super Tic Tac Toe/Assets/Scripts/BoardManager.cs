@@ -36,7 +36,7 @@ public class BoardManager : MonoBehaviour
 		}
 	}
 
-	private void BoardInitialSetup()
+	public void BoardInitialSetup()
 	{
 		var _cellPosition = new Vector2(-2 * BoardSize, BoardSize);
 		

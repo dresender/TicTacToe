@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour 
 {
 	public GameObject GameBoard;
+	public GameObject DrawText, CrossWonText, CircleWonText;
 	public enum Player { PlayerOne, PlayerTwo };
 	public enum PlayerControl { Human, AI }
 	public enum PlayerPawn { Cross, Circle };
@@ -35,17 +36,20 @@ public class GameManager : MonoBehaviour
 	{
 		_board = GameBoard.GetComponent<BoardManager>();
 		_scoreArray = new int[_board.BoardSize, _board.BoardSize];
-		SetupPlayerPawns();
+		//SetupPlayerPawns();
 		DontDestroyOnLoad(this.gameObject);
 
 		//Temporary
 		_currentPlayerController = PlayerControl.Human;
 		GameDifficultyChoice = GameDifficulty.Hard;
+		_playerOneDesignatedPawn = _board.Cross;
+		_playerTwoDesignatedPawn = _board.Circle;
+		Turn = Player.PlayerOne;
 	}
 
 	public void PlaceNewPiece(GameObject obj)
 	{
-		if (!GameOverConfirmed)
+		if (!GameOverConfirmed && GameStarted)
 		{
 			if (Turn == Player.PlayerOne)
 				_pawn = _playerOneDesignatedPawn;
@@ -71,18 +75,29 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	private void SetupPlayerPawns()
+	public void ResetGame()
 	{
-		if (PlayerOnePawn == PlayerPawn.Cross)
-			_playerOneDesignatedPawn = _board.Cross;
-		else
-			_playerOneDesignatedPawn = _board.Circle;
-
-		if (PlayerTwoPawn == PlayerPawn.Cross)
-			_playerTwoDesignatedPawn = _board.Cross;
-		else
-			_playerTwoDesignatedPawn = _board.Circle;
+		//_board.ClearBoard();
+		//_board.BoardInitialSetup();
+		CrossWonText.SetActive(false);
+		CircleWonText.SetActive(false);
+		DrawText.SetActive(false);
+		GameOverConfirmed = false;
+		GameStarted = true;
 	}
+
+	// private void SetupPlayerPawns()
+	// {
+	// 	if (PlayerOnePawn == PlayerPawn.Cross)
+	// 		_playerOneDesignatedPawn = _board.Cross;
+	// 	else
+	// 		_playerOneDesignatedPawn = _board.Circle;
+
+	// 	if (PlayerTwoPawn == PlayerPawn.Cross)
+	// 		_playerTwoDesignatedPawn = _board.Cross;
+	// 	else
+	// 		_playerTwoDesignatedPawn = _board.Circle;
+	// }
 
 	private Player ChangePlayerTurn(Player _p)
 	{
@@ -104,7 +119,14 @@ public class GameManager : MonoBehaviour
 		//Checking for a victorious player
 		_victoriousPlayer = _board.CheckIfGameIsOver(_board.Board, false);
 		if (_victoriousPlayer != _board.EmptyCell)
+		{
 			GameOverConfirmed = true;
+
+			if (_victoriousPlayer.gameObject.tag == _board.Cross.gameObject.tag)
+				CrossWonText.SetActive(true);
+			else
+				CircleWonText.SetActive(true);
+		}
 
 		var count = 0;
 
@@ -117,8 +139,15 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-		if (count == 0)
+		if (count <= 1)
+		{
 			GameOverConfirmed = true;
+
+			if (_victoriousPlayer == _board.EmptyCell)
+			{
+				DrawText.SetActive(true);
+			}
+		}
 	}
 
 	private void MakeAIMove()
