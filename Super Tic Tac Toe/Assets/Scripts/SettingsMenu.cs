@@ -38,7 +38,7 @@ public class SettingsMenu : MonoBehaviour
 
 		SceneManager.LoadScene("Main");
 
-		_gameManagerScript.GameStarted = true;
+		_gameManagerScript.GameOverConfirmed = false;
 
 		this.gameObject.SetActive(false);
 		GameMainMenu.SetActive(true);
@@ -54,24 +54,35 @@ public class SettingsMenu : MonoBehaviour
 
 	private void SetInitiativeSelection()
 	{
-		// if (InitiativeDropDown.value == 0)
-		// 	_gameManagerScript.CurrentPlayerController = _gameManagerScript.FirstPlayer;
-		// else if (InitiativeDropDown.value == 1)
-		// 	_gameManagerScript.CurrentPlayerController = _gameManagerScript.SecondPlayer;
-		// else
-		// {
-		// 	var _random = UnityEngine.Random.Range(0f, 100f);
+		if (InitiativeDropDown.value == 0)
+		{
+			//If Player chose Human plays first, set the CurrentPlayerController to the First Player
+			_gameManagerScript.CurrentPlayerController = _gameManagerScript.FirstPlayer;
+			//And then put the current Turn to the PlayerOne (Cross Pawn)
+			_gameManagerScript.Turn = GameManager.Player.PlayerOne;
+		}
+		else if (InitiativeDropDown.value == 1)
+		{
+			//If Player chose CPU plays first, set the CurrentPlayerController to the Second Player
+			_gameManagerScript.CurrentPlayerController = _gameManagerScript.SecondPlayer;
+			//And then put the current Turn to the PlayerTwo (Circle Pawn)
+			_gameManagerScript.Turn = GameManager.Player.PlayerTwo;
+		}
+		else
+		{
+			var _random = UnityEngine.Random.Range(0f, 100f);
 
-		// 	if (_random > 50)
-		// 		_gameManagerScript.CurrentPlayerController = _gameManagerScript.FirstPlayer;
-		// 	else
-		// 		_gameManagerScript.CurrentPlayerController = _gameManagerScript.SecondPlayer;
-		// }
-
-		// if (GameModeSlider.value == 1)
-		// {
-		// 	_gameManagerScript.CurrentPlayerController = _gameManagerScript.FirstPlayer;
-		// }			
+			if (_random > 50)
+			{
+				_gameManagerScript.CurrentPlayerController = _gameManagerScript.FirstPlayer;
+				_gameManagerScript.Turn = GameManager.Player.PlayerOne;
+			}
+			else
+			{
+				_gameManagerScript.CurrentPlayerController = _gameManagerScript.SecondPlayer;
+				_gameManagerScript.Turn = GameManager.Player.PlayerTwo;
+			}
+		}			
 	}
 
 	private void SetDifficulty()

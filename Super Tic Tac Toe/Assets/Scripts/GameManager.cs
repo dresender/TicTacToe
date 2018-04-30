@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
 	public GameDifficulty GameDifficultyChoice;
 	public PlayerControl CurrentPlayerController;
 	public bool GameOverConfirmed = false;
-	public bool GameStarted = false;
 
 
 	private BoardManager _board;
@@ -30,9 +29,10 @@ public class GameManager : MonoBehaviour
 	private GameObject _victoriousPlayer;
 	private AudioManager _audioManager;
 	private PlayerControl _aiTurnCount;
+	private int[,] _scoreArray;
 	private int _bestLine;
 	private int _bestColumn;
-	private int[,] _scoreArray;
+	private PlayerControl _whoPlaysFirst;
 
 	void Start()
 	{
@@ -41,17 +41,19 @@ public class GameManager : MonoBehaviour
 		_scoreArray = new int[_board.BoardSize, _board.BoardSize];
 		DontDestroyOnLoad(this.gameObject);
 
-		//Temporary
+		//Initializations
 		CurrentPlayerController = FirstPlayer;
 		GameDifficultyChoice = GameDifficulty.Hard;
+		GameOverConfirmed = true;
 		Turn = Player.PlayerOne;
 		_playerOneDesignatedPawn = _board.Cross;
 		_playerTwoDesignatedPawn = _board.Circle;
+		_whoPlaysFirst = CurrentPlayerController;
 	}
 
 	public void PlaceNewPiece(GameObject obj)
 	{
-		if (!GameOverConfirmed && GameStarted)
+		if (!GameOverConfirmed)
 		{
 			if (Turn == Player.PlayerOne)
 				_pawn = _playerOneDesignatedPawn;
@@ -85,7 +87,13 @@ public class GameManager : MonoBehaviour
 		CircleWonText.SetActive(false);
 		DrawText.SetActive(false);
 		GameOverConfirmed = false;
-		GameStarted = true;
+		CurrentPlayerController = _whoPlaysFirst;
+
+		if (CurrentPlayerController == FirstPlayer)
+			Turn = Player.PlayerOne;
+		else
+			Turn = Player.PlayerTwo;
+
 	}
 
 	private Player ChangePlayerTurn(Player _p)
@@ -146,11 +154,6 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	private void SetScoreText()
-	{
-
-	}
-
 	private void MakeAIMove()
     {
 		//Clone the game Board array to use in the AI searching movement script
@@ -165,18 +168,17 @@ public class GameManager : MonoBehaviour
 		//Choosing to use or not Minimax to make AI move based on game difficulty choice
 		if (GameDifficultyChoice == GameDifficulty.Hard)
 		{
+			//Minimax to the full potential. Optimal Moves.
 			Minimax(_boardCopy, _emptyCells, true);
 		}
 		else
 		{
-			var _random = UnityEngine.Random.Range(0, 6);
+			var _random = UnityEngine.Random.Range(0f, 100f);
 
-			if (_random > 4)
+			if (_random > 70f)
 				Minimax(_boardCopy, _emptyCells, true);
 			else
-			{
-				Minimax(_boardCopy, _emptyCells, true);
-			}
+				RandomAIMove(_boardCopy);
 		}
 		
 		//Move Position from Minimax
@@ -210,7 +212,7 @@ public class GameManager : MonoBehaviour
         Instantiate(_newPositionObject, _newPositionObject.transform.position, Quaternion.identity);
     }
 
-    private int Minimax(GameObject[,] _b, int _depth, bool firstTime = false)
+    private int Minimax(GameObject[,] _b, int _depth, bool _firstTime = false)
 	{
 		var _gameWonResult = _board.CheckIfGameIsOver(_b);
 
@@ -232,8 +234,8 @@ public class GameManager : MonoBehaviour
 						_aiTurnCount = PlayerControl.Human;
 
 						//Calls Minimax recursively, sending the updated temp board
-						//and decreasing the depth by one!
-						int next = Minimax(_b, _depth - 1);
+						//and decreasing the depth by one!				
+						int next = Minimax(_b, _depth - 1) * (_depth + 1);
 
 						//For debugging purposes, the _scoreArray is updated
 						//with the next value
@@ -247,7 +249,7 @@ public class GameManager : MonoBehaviour
 
 							//If this is the initial board (or the board to choose
 							//a movement), then update the game board array index variables
-							if (firstTime)
+							if (_firstTime)
 							{
 								_bestLine = i;
 								_bestColumn = j;
@@ -278,7 +280,7 @@ public class GameManager : MonoBehaviour
 
 						//Calls Minimax recursively, sending the updated temp board
 						//and decreasing the depth by one!
-						int next = Minimax(_b, _depth - 1);
+						int next = Minimax(_b, _depth - 1) * (_depth + 1);
 
 						//If the terminal node returns a next smaller number,
 						//thats the new min (favorite move for the Human Player)
@@ -294,6 +296,23 @@ public class GameManager : MonoBehaviour
 			}
 			return min;
 		}        
+	}
+
+	private void RandomAIMove(GameObject[,] _b)
+	{
+		for (var i = 0; i < _board.BoardSize; i++)
+		{
+			for (var j = 0; j < _board.BoardSize; j++)
+			{
+				//Check for the first empty Spot
+				if (_b[i, j].gameObject.tag == _board.EmptyCell.gameObject.tag)
+				{
+					_bestLine = i;
+					_bestColumn = j;
+					return;
+				}
+			}
+		}
 	}
 
 	private int CheckHowManyEmptyCells(GameObject[,] _b)
