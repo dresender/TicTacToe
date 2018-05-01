@@ -812,8 +812,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1910892855}
   - component: {fileID: 1910892857}
-  - component: {fileID: 1910892856}
   - component: {fileID: 1910892858}
+  - component: {fileID: 1910892856}
   m_Layer: 0
   m_Name: ResetButton
   m_TagString: Untagged

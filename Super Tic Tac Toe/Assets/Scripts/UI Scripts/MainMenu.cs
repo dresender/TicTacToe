@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour
 
 	void Start () 
 	{
-		_audioManager = AudioManagerObject.GetComponent<AudioManager>();
+		_audioManager = FindObjectOfType(typeof(AudioManager)) as AudioManager;
 
 		PlayButton.onClick.AddListener(delegate { PlaySound(); });
 		CreditsButton.onClick.AddListener(delegate { PlaySound(); });

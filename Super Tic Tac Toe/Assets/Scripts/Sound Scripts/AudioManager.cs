@@ -4,11 +4,22 @@ using System;
 
 public class AudioManager : MonoBehaviour 
 {
-	public Sound[] Sounds;
+	[HideInInspector]
 	public static AudioManager Instance;
+	public Sound[] Sounds;
 
 	void Awake ()
 	{
+		if (Instance == null)
+			Instance = this;
+		else
+		{
+			Destroy(this.gameObject);
+			return;
+		}
+
+		DontDestroyOnLoad(this.gameObject);
+
 		foreach (Sound s in Sounds)
 		{
 			s.Source = gameObject.AddComponent<AudioSource>();
@@ -21,11 +32,9 @@ public class AudioManager : MonoBehaviour
 
 	void Start()
 	{
-		DontDestroyOnLoad(this.gameObject);
-
 		Play("ThemeMusic");
 	}
-	
+
 	public void Play (string _name)
 	{
 		Sound _s = Array.Find(Sounds, Sound => Sound.Name == _name);

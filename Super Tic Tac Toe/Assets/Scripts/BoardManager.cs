@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardManager : MonoBehaviour 
-{
+{	
+	[HideInInspector]
+	public static BoardManager Instance;
 	public int BoardSize = 3;
 	public GameObject Cross;
 	public GameObject Circle;
@@ -18,6 +20,18 @@ public class BoardManager : MonoBehaviour
 
 	private AudioManager _audioManager;
 	private GameObject _winLine;
+
+
+	void Awake()
+	{
+		if (Instance == null)
+			Instance = this;
+		else
+		{
+			Destroy(this.gameObject);
+			return;
+		}
+	}
 
 	void Start()
 	{

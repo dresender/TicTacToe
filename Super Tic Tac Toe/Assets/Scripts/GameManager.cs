@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour 
 {
+	[HideInInspector]
+	public static GameManager Instance;
 	public GameObject GameBoard;
 	public GameObject DrawText, CrossWonText, CircleWonText;
 	public GameObject AudioManagerObject;
@@ -33,6 +35,18 @@ public class GameManager : MonoBehaviour
 	private int _bestLine;
 	private int _bestColumn;
 	private PlayerControl _whoPlaysFirst;
+
+
+	void Awake()
+	{
+		if (Instance == null)
+			Instance = this;
+		else
+		{
+			Destroy(this.gameObject);
+			return;
+		}
+	}
 
 	void Start()
 	{
@@ -175,7 +189,7 @@ public class GameManager : MonoBehaviour
 		{
 			var _random = UnityEngine.Random.Range(0f, 100f);
 
-			if (_random > 70f)
+			if (_random > 40f)
 				Minimax(_boardCopy, _emptyCells, true);
 			else
 				RandomAIMove(_boardCopy);

@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 public class TitleScreen : MonoBehaviour 
 {
 	public GameObject GameMainMenu;
-	public GameObject AudioManagerObject;
+	//public GameObject AudioManagerObject;
 
 	private AudioManager _audioManager;
 
 	void Start()
 	{
-		_audioManager = AudioManagerObject.GetComponent<AudioManager>();
+		_audioManager = FindObjectOfType(typeof(AudioManager)) as AudioManager;
 	}
 
 	void Update () 

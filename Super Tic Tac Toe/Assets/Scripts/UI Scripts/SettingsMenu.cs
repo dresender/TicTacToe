@@ -15,7 +15,7 @@ public class SettingsMenu : MonoBehaviour
 
 	private GameManager _gameManagerScript;
 	private GameObject _gameManagerObject;
-	private AudioManager _audioManager;
+	public AudioManager _audioManager;
 
 	void Start()
 	{

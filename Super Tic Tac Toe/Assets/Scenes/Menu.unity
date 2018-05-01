@@ -3222,7 +3222,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameMainMenu: {fileID: 833995809}
-  AudioManagerObject: {fileID: 1645784478}
 --- !u!1 &1281949587
 GameObject:
   m_ObjectHideFlags: 0
@@ -4768,7 +4767,7 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: 5a145d9de2eb0c0449a0438ed2793db6, type: 3}
     Volume: 0.15
     Pitch: 1
-    Loop: 0
+    Loop: 1
     Source: {fileID: 0}
   - Name: MenuButtonSound
     Clip: {fileID: 8300000, guid: 6057011120035fa46bb4b859dec30fbd, type: 3}
@@ -5208,6 +5207,7 @@ MonoBehaviour:
   GameModeSlider: {fileID: 1281949589}
   InitiativeDropDown: {fileID: 1542732942}
   DifficultySlider: {fileID: 1427344969}
+  _audioManager: {fileID: 0}
 --- !u!1 &1868235759
 GameObject:
   m_ObjectHideFlags: 0
