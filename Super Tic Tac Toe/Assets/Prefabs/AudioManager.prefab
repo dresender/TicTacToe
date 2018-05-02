@@ -1,0 +1,114 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1165229166607706}
+  m_IsPrefabParent: 1
+--- !u!1 &1165229166607706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4734142201672808}
+  - component: {fileID: 114878082310213358}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4734142201672808
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1165229166607706}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114878082310213358
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1165229166607706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0109a84e8befea2479bb86505aa37155, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sounds:
+  - Name: ThemeMusic
+    Clip: {fileID: 8300000, guid: 5a145d9de2eb0c0449a0438ed2793db6, type: 3}
+    Volume: 0.15
+    Pitch: 1
+    Loop: 1
+    Source: {fileID: 0}
+  - Name: MenuButtonSound
+    Clip: {fileID: 8300000, guid: 6057011120035fa46bb4b859dec30fbd, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: LumberJackVictory
+    Clip: {fileID: 8300000, guid: bed789f73d310df4ba2dad3f345676c6, type: 3}
+    Volume: 0.3
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: EntVictory
+    Clip: {fileID: 8300000, guid: 6fb96082d0b643d4ab0e77198e6bcac0, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: DrawSound
+    Clip: {fileID: 8300000, guid: 5b169ca4383832e4abf0ff5734eae727, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: StartMatchButton
+    Clip: {fileID: 8300000, guid: 8c206e429ecd22a43a7cfadf170a2356, type: 3}
+    Volume: 0.6
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: ResetButtonSound
+    Clip: {fileID: 8300000, guid: 7862831829c35854f9a06fa4f5e38d44, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: InitialMenuButtons
+    Clip: {fileID: 8300000, guid: e76c61b7772ed3442b3b9483dedf7e29, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: StartGame
+    Clip: {fileID: 8300000, guid: a9de0daca7c8ed6478dc1861a1c23ce0, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}
+  - Name: ReturnButton
+    Clip: {fileID: 8300000, guid: ef279010ec3a6204d90bb9697b6b6df0, type: 3}
+    Volume: 1
+    Pitch: 1
+    Loop: 0
+    Source: {fileID: 0}

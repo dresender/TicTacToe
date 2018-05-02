@@ -15,7 +15,7 @@ public class SettingsMenu : MonoBehaviour
 
 	private GameManager _gameManagerScript;
 	private GameObject _gameManagerObject;
-	public AudioManager _audioManager;
+	private AudioManager _audioManager;
 
 	void Start()
 	{
@@ -23,8 +23,10 @@ public class SettingsMenu : MonoBehaviour
 		InitiativeDropDown.value = 0;
 		DifficultySlider.value = 1f;
 
-		_gameManagerScript = GameManagerObject.GetComponent<GameManager>();
-		_audioManager = AudioManagerObject.GetComponent<AudioManager>();
+		//_gameManagerScript = GameManagerObject.GetComponent<GameManager>();
+		_gameManagerScript = FindObjectOfType(typeof(GameManager)) as GameManager;
+		//_audioManager = AudioManagerObject.GetComponent<AudioManager>();
+		_audioManager = FindObjectOfType(typeof(AudioManager)) as AudioManager;
 
 		GameModeSlider.onValueChanged.AddListener(delegate {ValueChangeCheck(); });
 		DifficultySlider.onValueChanged.AddListener(delegate {ValueChangeCheck(); });
