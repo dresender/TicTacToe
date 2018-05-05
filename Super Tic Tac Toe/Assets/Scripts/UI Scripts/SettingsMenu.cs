@@ -17,6 +17,7 @@ public class SettingsMenu : MonoBehaviour
 	private GameManager _gameManagerScript;
 	private GameObject _gameManagerObject;
 	private AudioManager _audioManager;
+	private float _random;
 
 	void Start()
 	{
@@ -40,6 +41,11 @@ public class SettingsMenu : MonoBehaviour
 		SceneManager.LoadScene("Main");
 
 		_gameManagerScript.GameOverConfirmed = false;
+
+		if (InitiativeDropDown.value == 1)
+			_gameManagerScript.FirstMoveAI();
+		else if (InitiativeDropDown.value == 2 && _random < 50f)
+			_gameManagerScript.FirstMoveAI();
 
 		this.gameObject.SetActive(false);
 		GameMainMenu.SetActive(true);
@@ -75,7 +81,7 @@ public class SettingsMenu : MonoBehaviour
 		}
 		else
 		{
-			var _random = UnityEngine.Random.Range(0f, 100f);
+			_random = UnityEngine.Random.Range(0f, 100f);
 
 			if (_random > 50)
 			{
