@@ -61,6 +61,8 @@ public class SettingsMenu : MonoBehaviour
 			_gameManagerScript.CurrentPlayerController = _gameManagerScript.FirstPlayer;
 			//And then put the current Turn to the PlayerOne (Cross Pawn)
 			_gameManagerScript.Turn = GameManager.Player.PlayerOne;
+			//Setting the first player variable
+			_gameManagerScript.WhoPlaysFirst = _gameManagerScript.FirstPlayer;
 		}
 		else if (InitiativeDropDown.value == 1)
 		{
@@ -68,6 +70,8 @@ public class SettingsMenu : MonoBehaviour
 			_gameManagerScript.CurrentPlayerController = _gameManagerScript.SecondPlayer;
 			//And then put the current Turn to the PlayerTwo (Circle Pawn)
 			_gameManagerScript.Turn = GameManager.Player.PlayerTwo;
+			//Setting the first player variable
+			_gameManagerScript.WhoPlaysFirst = _gameManagerScript.SecondPlayer;
 		}
 		else
 		{

@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 	[HideInInspector]
 	public static GameManager Instance;
 	public GameObject GameBoard;
-	public GameObject DrawText, CrossWonText, CircleWonText;
+	public GameObject DrawText, CrossWonText, CircleWonText, AIPlaying;
 	public GameObject AudioManagerObject;
 	public enum Player { PlayerOne, PlayerTwo };
 	public enum PlayerControl { Human, AI }
@@ -17,10 +17,11 @@ public class GameManager : MonoBehaviour
 	public Player Turn;
 	public PlayerControl FirstPlayer = PlayerControl.Human;
 	public PlayerControl SecondPlayer = PlayerControl.AI;
+	public PlayerControl WhoPlaysFirst;
+	public PlayerControl CurrentPlayerController;
 	public PlayerPawn PlayerOnePawn = PlayerPawn.Cross;
 	public PlayerPawn PlayerTwoPawn = PlayerPawn.Circle;
 	public GameDifficulty GameDifficultyChoice;
-	public PlayerControl CurrentPlayerController;
 	public bool GameOverConfirmed = false;
 
 	private BoardManager _board;
@@ -33,7 +34,6 @@ public class GameManager : MonoBehaviour
 	private int[,] _scoreArray;
 	private int _bestLine;
 	private int _bestColumn;
-	private PlayerControl _whoPlaysFirst;
 
 
 	void Awake()
@@ -56,12 +56,11 @@ public class GameManager : MonoBehaviour
 
 		//Initializations
 		CurrentPlayerController = FirstPlayer;
+		Turn = Player.PlayerOne;
 		GameDifficultyChoice = GameDifficulty.Hard;
 		GameOverConfirmed = true;
-		Turn = Player.PlayerOne;
 		_playerOneDesignatedPawn = _board.Cross;
 		_playerTwoDesignatedPawn = _board.Circle;
-		_whoPlaysFirst = CurrentPlayerController;
 	}
 
 	public void PlaceNewPiece(GameObject obj)
@@ -85,28 +84,42 @@ public class GameManager : MonoBehaviour
 			//AI Player
 			if (CurrentPlayerController == PlayerControl.AI && !GameOverConfirmed)
 			{
-				MakeAIMove();
+				//MakeAIMove();
+				StartCoroutine("AIWaitingTime");
 				Turn = ChangePlayerTurn(Turn);
-				CheckForGameOverCondition();
+				//CheckForGameOverCondition();
 			}
 		}
+	}
+
+	public void FirstMoveAI()
+	{
+		StartCoroutine("AIWaitingTime");
+		Turn = ChangePlayerTurn(Turn);
 	}
 
 	public void ResetGame()
 	{
 		_board.ClearBoard();
 		_board.BoardInitialSetup();
+		ClearGameTexts();
+		GameOverConfirmed = false;
+		CurrentPlayerController = WhoPlaysFirst;
+
+		if (WhoPlaysFirst == FirstPlayer)
+			Turn = Player.PlayerOne;
+		else
+		{
+			Turn = Player.PlayerTwo;
+			FirstMoveAI();
+		}
+	}
+
+	public void ClearGameTexts()
+	{
 		CrossWonText.SetActive(false);
 		CircleWonText.SetActive(false);
 		DrawText.SetActive(false);
-		GameOverConfirmed = false;
-		CurrentPlayerController = _whoPlaysFirst;
-
-		if (CurrentPlayerController == FirstPlayer)
-			Turn = Player.PlayerOne;
-		else
-			Turn = Player.PlayerTwo;
-
 	}
 
 	private Player ChangePlayerTurn(Player _p)
@@ -165,6 +178,22 @@ public class GameManager : MonoBehaviour
 				_audioManager.Play("DrawSound");
 			}
 		}
+	}
+
+	private IEnumerator AIWaitingTime()
+	{
+		//Show AI is Playing Text
+		AIPlaying.SetActive(true);
+
+		yield return new WaitForSeconds(2.3f);
+
+		//Plays the best move found
+		MakeAIMove();
+
+		CheckForGameOverCondition();
+
+		//Hide AI is Playing Text
+		AIPlaying.SetActive(false);
 	}
 
 	private void MakeAIMove()
