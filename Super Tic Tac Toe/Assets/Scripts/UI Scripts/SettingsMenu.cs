@@ -12,6 +12,7 @@ public class SettingsMenu : MonoBehaviour
 	public Slider GameModeSlider;
 	public Dropdown InitiativeDropDown;
 	public Slider DifficultySlider;
+	public Button InstructionsButton;
 
 	private GameManager _gameManagerScript;
 	private GameObject _gameManagerObject;
@@ -23,9 +24,7 @@ public class SettingsMenu : MonoBehaviour
 		InitiativeDropDown.value = 0;
 		DifficultySlider.value = 1f;
 
-		//_gameManagerScript = GameManagerObject.GetComponent<GameManager>();
 		_gameManagerScript = FindObjectOfType(typeof(GameManager)) as GameManager;
-		//_audioManager = AudioManagerObject.GetComponent<AudioManager>();
 		_audioManager = FindObjectOfType(typeof(AudioManager)) as AudioManager;
 
 		GameModeSlider.onValueChanged.AddListener(delegate {ValueChangeCheck(); });
@@ -109,4 +108,9 @@ public class SettingsMenu : MonoBehaviour
 	{
 		_audioManager.Play("ReturnButton");
 	}
+
+	public void PlayInitialMenuSound()
+    {
+		_audioManager.Play("InitialMenuButtons");
+    }
 }

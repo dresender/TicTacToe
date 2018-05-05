@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
 	public PlayerControl CurrentPlayerController;
 	public bool GameOverConfirmed = false;
 
-
 	private BoardManager _board;
 	private GameObject _pawn;
 	private GameObject _playerOneDesignatedPawn;
@@ -222,6 +221,8 @@ public class GameManager : MonoBehaviour
 		// Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[1,0], _scoreArray[1,1], _scoreArray[1,2]));
 		// Debug.Log(string.Format("{0}, {1}, {2}", _scoreArray[2,0], _scoreArray[2,1], _scoreArray[2,2]));
 
+		//StartCoroutine("AIWaitingTime", _newPositionObject);
+
         //Plays the best move found
         Instantiate(_newPositionObject, _newPositionObject.transform.position, Quaternion.identity);
     }
@@ -361,13 +362,9 @@ public class GameManager : MonoBehaviour
 		return _arrayClone;
 	}
 
-	private void ClearArray(GameObject[,] _array)
+	IEnumerator AIWaitingTime(GameObject _object)
 	{
-		Array.Clear(_array, 0, _array.Length);
-	}
-
-	private void ClearArray(int[,] _array)
-	{
-		Array.Clear(_array, 0, _array.Length);
+		yield return new WaitForSeconds(2f);
+		Instantiate(_object, _object.transform.position, Quaternion.identity);
 	}
 }
